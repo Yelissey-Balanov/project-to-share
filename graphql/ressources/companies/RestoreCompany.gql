@@ -1,0 +1,5 @@
+mutation RestoreCompany($id: ObfId!) {
+    restoreCompany(id: $id, trashed: WITH) {
+        id
+    }
+}

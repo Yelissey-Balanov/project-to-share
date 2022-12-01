@@ -1,0 +1,76 @@
+#import "../../fragments/Document.gql"
+#import "../../fragments/ImageSizeFormat.gql"
+#import "../../fragments/Paginator.gql"
+
+query GetSuitableCandidatesForProject($projectId: ObfId!, $first: Int!, $page: Int) {
+  suitableCandidatesForProject(project_id: $projectId, first: $first, page: $page) {
+    paginatorInfo {
+      ...Paginator
+    }
+    data {
+      id
+      person {
+        id
+        title
+        firstname
+        lastname
+        full_name
+        gender
+        birthdate
+        foto {
+          id
+          sizes {
+            PROFILE_IMAGE {
+              ...ImageSizeFormat
+            }
+          }
+        }
+      }
+      is_interim
+      is_permanent
+      desired_job
+      available_from
+      daily_rate
+      has_hourly_rate
+      expenses_included
+      period_of_notice
+      next_possible_notice_to
+      basic_salary
+      bonus_eur
+      is_business_car_included
+      other_bonus
+      is_research
+      location {
+        id
+        full_address
+        postal_code
+        city
+        country
+      }
+      industries {
+        id
+        title
+      }
+      skills {
+        id
+        title
+      }
+      certifications {
+        id
+        title
+      }
+      it_skills {
+        id
+        title
+      }
+      cv_documents {
+        ...Document
+      }
+      caution
+      was_placed
+      match_score
+      is_blacklisted
+      is_in_project(project_id: $projectId)
+    }
+  }
+}

@@ -1,0 +1,5 @@
+mutation DeleteProject($id: ObfId!) {
+    deleteProject(id: $id) {
+        id
+    }
+}

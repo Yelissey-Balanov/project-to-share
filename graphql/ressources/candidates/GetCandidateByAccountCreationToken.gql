@@ -1,0 +1,11 @@
+query GetCandidateByAccountCreationToken($candidate_id: ObfId!, $token: String!) {
+  getCandidateByAccountCreationToken(candidate_id: $candidate_id, token: $token) {
+    id
+    person {
+      id
+      title
+      firstname
+      lastname
+    }
+  }
+}

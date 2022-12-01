@@ -1,0 +1,35 @@
+#import "../../fragments/ImageSizeFormat.gql"
+#import "../../fragments/CropProps.gql"
+
+query GetChArticleForEdit ($id: ObfId!){
+  chArticle(id: $id) {
+    id
+    title
+    content
+    category
+    author
+    author_position
+    author_company
+    image_copyright
+    image {
+      id
+      sizes {
+        CH_ARTICLE_FULL {
+          ...ImageSizeFormat
+          ...CropProps
+        }
+      }
+      original_image
+    }
+    author_image {
+      id
+      sizes {
+        CH_ARTICLE_AUTHOR {
+          ...ImageSizeFormat
+          ...CropProps
+        }
+      }
+      original_image
+    }
+  }
+}

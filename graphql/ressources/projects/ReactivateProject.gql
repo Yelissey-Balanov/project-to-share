@@ -1,0 +1,7 @@
+mutation ReactivateProject($id: ObfId!, $note: String) {
+    reactivateProject(id: $id, note: $note) {
+      id
+      status
+      status_note
+    }
+}

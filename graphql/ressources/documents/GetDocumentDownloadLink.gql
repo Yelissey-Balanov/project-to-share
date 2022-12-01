@@ -1,0 +1,3 @@
+query GetDocumentDownloadLink($id: ObfId!) {
+  getDocumentDownloadLink(id: $id)
+}

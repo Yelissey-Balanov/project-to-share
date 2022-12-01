@@ -1,0 +1,41 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap');
+
+.tiptap--ch-theme {
+  max-width: 564px;
+  margin-left: 1.5em !important;
+  margin-right: 1.5em !important;
+  font-size: 16px;
+  font-family: 'Lato', sans-serif;
+  font-weight: 400;
+  letter-spacing: 1.4px;
+  color: #202020;
+
+  a {
+    color: #53bcb9;
+  }
+
+  p {
+    font-size: 16px;
+    line-height: 1.43;
+    margin: 1.43em 0;
+    word-break: break-word;
+  }
+
+  h2 {
+    font-size: 16px;
+    letter-spacing: 0.1em;
+    line-height: 1.4;
+    font-weight: 700;
+    margin-top: 50px;
+    margin-bottom: 20px;
+    text-transform: none !important;
+  }
+
+  img {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+    display: block;
+    margin: 1.43em 0;
+  }
+}

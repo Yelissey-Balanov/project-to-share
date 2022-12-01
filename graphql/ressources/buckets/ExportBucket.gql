@@ -1,0 +1,3 @@
+query ExportBucket($id: ObfId!, $candidateColumns: [String!]!, $clientColumns: [String!]!, $companyColumns: [String!]!, $projectColumns: [String!]!) {
+  exportBucket(id: $id, candidateColumns: $candidateColumns, clientColumns: $clientColumns, companyColumns: $companyColumns, projectColumns: $projectColumns)
+}

@@ -1,0 +1,5 @@
+mutation UpdateBucket($id: ObfId!, $input: UpdateBucketInput!) {
+    updateBucket(id: $id, input: $input) {
+      id
+    }
+}

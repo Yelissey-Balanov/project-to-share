@@ -1,0 +1,29 @@
+query GetSkillForView ($id: ObfId!){
+  skill(id: $id) {
+    id
+    title
+    is_reviewed
+    synonym_representative_id
+    synonyms {
+      id
+      title
+      synonym_representative_id
+      is_reviewed
+    }
+    parent {
+      id
+      title
+      is_reviewed
+    }
+    children {
+      id
+      title
+      is_reviewed
+      synonyms {
+        id
+        title
+        is_reviewed
+      }
+    }
+  }
+}

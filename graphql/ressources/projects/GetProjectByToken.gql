@@ -1,0 +1,25 @@
+#import "../../fragments/EventWithUser.gql"
+#import "../../fragments/ProjectDataForClientViews.gql"
+#import "../../fragments/CandidateInProjectForClient.gql"
+
+query GetProjectByToken($token: String!, $password: String!) {
+  getProjectByToken(token: $token, password: $password) {
+    ...ProjectDataForClientViews
+    current_shared_link {
+      token
+      is_longlist_shared
+    }
+    shortlisted_candidates {
+      ...CandidateInProjectForClient
+      events_in_project: events_in_shared_project_for_client(token: $token) {
+        ...EventWithUser
+      }
+    }
+    candidates {
+      ...CandidateInProjectForClient
+      events_in_project: events_in_shared_project_for_client(token: $token) {
+        ...EventWithUser
+      }
+    }
+  }
+}

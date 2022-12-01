@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<div id="app">
+    From int to hash:<br>
+    <input type="text" @input="calcIntToHash"><br>
+    {{resultIntToHash}}
+
+    <br><br>
+    From hash to int:<br>
+    <input type="text" @input="calcHashToInt"><br>
+    {{resultHashToInt}}
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+<script src="inithash.js"></script>
+<script>
+    const app = new Vue({
+        el: '#app',
+        data: {
+            resultIntToHash: '',
+            resultHashToInt: ''
+        },
+        methods: {
+            calcIntToHash: function(e) {
+                this.resultIntToHash = fromIntToHash(e.target.value);
+            },
+            calcHashToInt: function(e) {
+                this.resultHashToInt = fromHashToInt(e.target.value);
+            }
+        }
+    })
+</script>
+</body>
+</html>

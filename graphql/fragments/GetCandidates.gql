@@ -1,0 +1,75 @@
+#import "../fragments/ImageSizeFormat.gql"
+#import "../fragments/Document.gql"
+
+fragment GetCandidates on Candidate {
+  id
+  deleted_at
+  created_at
+  person {
+    id
+    full_name
+    client_id
+    birthdate
+    gender
+    foto {
+      id
+      sizes {
+        PROFILE_IMAGE {
+          ...ImageSizeFormat
+        }
+      }
+    }
+  }
+  email
+  user_id
+  is_interim
+  is_permanent
+  is_research
+  industries {
+    id
+    title
+  }
+  skills {
+    id
+    title
+  }
+  basic_salary
+  daily_rate
+  period_of_notice
+  phonenumbers {
+    id
+    country_code
+    dial_code
+    number
+  }
+  documents {
+    ...Document
+  }
+  location {
+    id
+    full_address
+    postal_code
+    city
+    country
+  }
+  worked_at_companies {
+    id
+    job_title
+    company {
+      id
+      aliasOrName
+      legal_form
+      logo {
+        id
+        sizes {
+          PROFILE_IMAGE {
+            ...ImageSizeFormat
+          }
+        }
+      }
+    }
+  }
+  caution
+  was_placed
+  is_blacklisted
+}

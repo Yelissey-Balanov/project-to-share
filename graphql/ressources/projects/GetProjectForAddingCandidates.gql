@@ -1,0 +1,53 @@
+query GetProjectForAddingCandidates($id: ObfId!) {
+  project(id: $id) {
+    id
+    status
+    is_interim
+    is_permanent
+    title
+    max_basic_salary
+    max_bonus_eur
+    is_business_car_included
+    fee_structure
+    max_daily_rate
+    expenses_included
+    project_start
+    project_end
+
+    industries {
+      id
+      title
+      synonyms {
+        id
+        title
+      }
+    }
+    skills {
+      id
+      title
+      synonyms {
+        id
+        title
+      }
+    }
+    certifications {
+      id
+      title
+    }
+    it_skills {
+      id
+      title
+      synonyms {
+        id
+        title
+      }
+    }
+    languages {
+      code
+      name
+      language_pivot {
+        level
+      }
+    }
+  }
+}

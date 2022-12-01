@@ -1,0 +1,7 @@
+mutation CreateCertification($input: CreateCertificationInput!) {
+  createCertification(input: $input) {
+    id
+    title
+    is_reviewed
+  }
+}

@@ -1,0 +1,9 @@
+mutation UpdateEvent($id: ObfId!, $input: UpdateEventInput!) {
+    updateEvent(id: $id, input: $input) {
+      id
+      group
+      type
+      notes
+      happened_at
+    }
+}

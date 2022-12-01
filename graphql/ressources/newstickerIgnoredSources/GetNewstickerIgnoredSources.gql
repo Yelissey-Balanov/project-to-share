@@ -1,0 +1,6 @@
+query GetNewstickerIgnoredSources {
+  newstickerIgnoredSources(orderBy: [{column: NAME, order: ASC}]) {
+    id
+    name
+  }
+}

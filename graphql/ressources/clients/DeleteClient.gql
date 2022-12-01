@@ -1,0 +1,5 @@
+mutation DeleteClient($id: ObfId!) {
+    deleteClient(id: $id) {
+        id
+    }
+}

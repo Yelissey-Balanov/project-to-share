@@ -1,0 +1,8 @@
+mutation UpdateClient($id: ObfId!, $input: UpdateClientInput!) {
+    updateClient(id: $id, input: $input) {
+      id
+      person {
+        id
+      }
+    }
+}

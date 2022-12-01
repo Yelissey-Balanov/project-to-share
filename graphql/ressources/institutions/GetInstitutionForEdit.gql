@@ -1,0 +1,7 @@
+query GetInstitutionForEdit ($id: ObfId!){
+  institution(id: $id) {
+    id
+    name
+    is_reviewed
+  }
+}

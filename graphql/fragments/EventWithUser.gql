@@ -1,0 +1,22 @@
+#import "./ImageSizeFormat.gql"
+
+fragment EventWithUser on Event {
+  id
+  group
+  type
+  notes
+  happened_at
+  user {
+    id
+    firstname
+    lastname
+    foto {
+      id
+      sizes {
+        PROFILE_IMAGE {
+          ...ImageSizeFormat
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,8 @@
+fragment CropProps on ImageSizeFormat {
+  cropProps {
+    width
+    height
+    top
+    left
+  }
+}

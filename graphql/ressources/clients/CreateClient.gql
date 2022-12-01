@@ -1,0 +1,10 @@
+mutation CreateClient($input: CreateClientInput!) {
+    createClient(input: $input) {
+      id
+      person {
+        id
+        firstname
+        lastname
+      }
+    }
+}

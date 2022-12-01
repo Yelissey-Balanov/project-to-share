@@ -1,0 +1,5 @@
+mutation AddToBucket($id: ObfId!, $input: AddToBucketInput!) {
+    addToBucket(id: $id, input: $input) {
+      id
+    }
+}

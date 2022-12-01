@@ -1,0 +1,56 @@
+#import "../../fragments/Document.gql"
+#import "../../fragments/ImageSizeFormat.gql"
+#import "../../fragments/CropProps.gql"
+
+query GetCompany($id: ObfId!) {
+  company(id: $id) {
+    id
+    alias
+    name
+    legal_form
+    website
+    email
+    employees_count
+    annual_sales
+    about
+    logo {
+      id
+      sizes {
+        PROFILE_IMAGE {
+          ...ImageSizeFormat
+          ...CropProps
+        }
+      }
+      original_image
+    }
+    industries {
+      id
+      title
+    }
+    locations {
+      id
+      full_address
+      label
+    }
+    phonenumbers {
+      id
+      country_code
+      dial_code
+      number
+      label
+    }
+    parent_company {
+      id
+      name
+    }
+    child_companies {
+      id
+      name
+    }
+    jobs_external_link
+    invoice_notes
+    documents {
+      ...Document
+    }
+  }
+}

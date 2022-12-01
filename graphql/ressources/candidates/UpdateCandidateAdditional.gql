@@ -1,0 +1,5 @@
+mutation UpdateCandidateAdditional($id: ObfId!, $input: UpdateCandidateAdditionalInput!) {
+  updateCandidateAdditional(id: $id, input: $input) {
+    id
+  }
+}

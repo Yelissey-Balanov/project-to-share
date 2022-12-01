@@ -1,0 +1,23 @@
+#import "../../fragments/EventEventable.gql"
+
+query DashboardUpcomingEvents($onlyDay: DateRequestTz) {
+  me {
+    id
+    events(onlyDay: $onlyDay) {
+      ...EventEventable
+      id
+      happened_at
+      group
+      type
+      notes
+      user {
+        id
+      }
+      project {
+        id
+        title
+        deleted_at
+      }
+    }
+  }
+}

@@ -1,0 +1,45 @@
+// colors
+$color-gray: #e0e4e8;
+$color-gray-light: #ebeff5;
+$color-gray-semidark: #999;
+$color-gray-dark: #555;
+$color-red: #ec1b1b;
+$color-orange: #ff9800;
+$color-green: #38aa7d;
+$color-blue: #039be5;
+
+$color-text: #000;
+$color-primary: #2968aa;
+
+$bg-color: #f6f6f6;
+$nav-bg-color: $color-gray-light;
+
+// spacing
+$global-padding-h: 40px;
+$global-header-height: 56px;
+
+$left-nav-width: 190px;
+
+// media
+$media-till-sm: 'only screen and (max-width: 479px)';
+
+$media-from-sm: 'only screen and (min-width: 480px)';
+$media-only-sm: 'only screen and (min-width: 480px) and (max-width: 767px)';
+$media-till-md: 'only screen and (max-width: 767px)';
+
+$media-from-md: 'only screen and (min-width: 768px)';
+$media-only-md: 'only screen and (min-width: 768px) and (max-width: 991px)';
+$media-till-lg: 'only screen and (max-width: 991px)';
+
+$media-from-lg: 'only screen and (min-width: 992px)';
+$media-only-lg: 'only screen and (min-width: 992px) and (max-width: 1199px)';
+$media-till-xl: 'only screen and (max-width: 1199px)';
+
+$media-from-xl: 'only screen and (min-width: 1200px)';
+
+// mixins
+@mixin flex($grow, $shrink, $basis) {
+  flex-shrink: $shrink;
+  flex-grow: $grow;
+  flex-basis: $basis;
+}

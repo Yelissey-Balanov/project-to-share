@@ -1,0 +1,3 @@
+query GetDocumentPreviewLink($id: ObfId!) {
+  getDocumentPreviewLink(id: $id)
+}

@@ -1,0 +1,13 @@
+#import "../../fragments/Paginator.gql"
+#import "../../fragments/GetCandidates.gql"
+
+query GetCandidates ($orderBy: [OrderByClause!], $first: Int!, $page: Int, $names: FirstAndLastname, $filter: CandidatesFilter){
+  candidates(orderBy: $orderBy, first: $first, page: $page, names: $names, filter: $filter) {
+    data {
+      ...GetCandidates
+    }
+    paginatorInfo {
+      ...Paginator
+    }
+  }
+}

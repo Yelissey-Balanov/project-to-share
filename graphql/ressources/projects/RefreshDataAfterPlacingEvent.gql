@@ -1,0 +1,21 @@
+#import "../../fragments/PlacedCandidate.gql"
+
+query RefreshDataAfterPlacingEvent($projectId: ObfId!, $candidate_id: ObfId!) {
+  project(id: $projectId) {
+    id
+    status
+    status_note
+    placed_start_at
+    candidate(candidate_id: $candidate_id){
+      id
+      was_placed
+      caution
+      candidate_project_pivot{
+        status
+      }
+    }
+    placed_candidate {
+      ...PlacedCandidate
+    }
+  }
+}

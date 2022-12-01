@@ -1,0 +1,6 @@
+mutation TransferCandidatesAndClients($fromCompanyId: ObfId!, $toCompanyId: ObfId!) {
+  transferCandidatesAndClients(fromCompanyId: $fromCompanyId, toCompanyId: $toCompanyId, trashed: WITH) {
+    id
+    name
+  }
+}

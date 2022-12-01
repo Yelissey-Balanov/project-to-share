@@ -1,0 +1,10 @@
+query GetCompanyLocations($id: ObfId!) {
+  company(id: $id, trashed: WITH) {
+    id
+    locations {
+      id
+      full_address
+      label
+    }
+  }
+}

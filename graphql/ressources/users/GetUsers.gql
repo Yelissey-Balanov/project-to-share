@@ -1,0 +1,17 @@
+#import "../../fragments/Paginator.gql"
+
+query GetUsers ($orderBy: [OrderByClause!], $first: Int!, $page: Int, $where: QueryUsersWhereWhereConditions, $roles: [UserRole!]){
+  users(orderBy: $orderBy, first: $first, page: $page, where: $where, roles: $roles) {
+    data {
+      id
+      firstname
+      lastname
+      email
+      roles
+      created_at
+    }
+    paginatorInfo {
+      ...Paginator
+    }
+  }
+}

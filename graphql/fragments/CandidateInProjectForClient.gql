@@ -1,0 +1,96 @@
+#import "./ImageSizeFormat.gql"
+
+fragment CandidateInProjectForClient on Candidate {
+  id
+  email
+  is_interim
+  is_permanent
+  marital_status
+  desired_job
+  max_distance_from_home
+  willing_to_travel
+  available_from
+  period_of_notice
+  next_possible_notice_to
+  nationalities {
+    id
+    name
+  }
+  expenses_included
+  has_hourly_rate
+  candidate_project_pivot {
+    status
+    is_shortlisted
+    purchasing_daily_rate
+    retail_daily_rate
+    basic_salary
+    bonus_eur
+    client_notes
+    liked_by_client
+  }
+  person {
+    id
+    full_name
+    gender
+    birthdate
+    foto {
+      id
+      sizes {
+        PROFILE_IMAGE {
+          ...ImageSizeFormat
+        }
+      }
+    }
+  }
+  cv_documents {
+    id
+    title
+    preview_path
+    mime_type
+    tags {
+      id
+      title
+    }
+  }
+  location {
+    id
+    full_address
+  }
+  industries {
+    id
+    title
+  }
+  skills {
+    id
+    title
+  }
+  certifications {
+    id
+    title
+  }
+  it_skills {
+    id
+    title
+  }
+  worked_at_companies {
+    id
+    from
+    job_title
+    job_level
+    main_responsibilities
+    till
+    company {
+      id
+      name
+      logo {
+        id
+        sizes {
+          PROFILE_IMAGE {
+            ...ImageSizeFormat
+          }
+        }
+      }
+      deleted_at
+    }
+  }
+}

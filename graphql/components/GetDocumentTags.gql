@@ -1,0 +1,6 @@
+query GetDocumentTags {
+  documentTags(orderBy: [{column: "title", order: ASC}]) {
+    id
+    title
+  }
+}

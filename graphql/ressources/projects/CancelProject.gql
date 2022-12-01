@@ -1,0 +1,7 @@
+mutation CancelProject($id: ObfId!, $note: String, $cancelled_by: ProjectCanceller!) {
+    cancelProject(id: $id, note: $note, cancelled_by: $cancelled_by) {
+      id
+      status
+      status_note
+    }
+}

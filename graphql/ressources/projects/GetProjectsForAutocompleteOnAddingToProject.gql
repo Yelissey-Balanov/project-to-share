@@ -1,0 +1,14 @@
+query GetProjectsForAutocompleteOnAddingToProject {
+  allProjects(filter: {statuses: [ACTIVE]}) {
+    id
+    title
+    is_interim
+    is_permanent
+    company {
+      id
+      name
+      legal_form
+    }
+    status
+  }
+}

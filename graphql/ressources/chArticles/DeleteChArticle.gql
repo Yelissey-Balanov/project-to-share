@@ -1,0 +1,5 @@
+mutation DeleteChArticle($id: ObfId!) {
+    deleteChArticle(id: $id) {
+        id
+    }
+}

@@ -1,0 +1,42 @@
+query GetWorkingHoursForProof($id: ObfId!) {
+  workingHours(id: $id) {
+    id
+    units {
+      date
+      hours
+      note
+    }
+    billing_type
+    retail_per_unit
+    requested_at
+    client_approved_at
+    client_declined_at
+    candidate_approved_at
+    candidate_declined_at
+    status
+    status_note
+    project {
+      id
+      title
+      placed_start_at
+      company {
+        id
+        complete_name
+      }
+    }
+    candidate {
+      id
+      person {
+        id
+        full_name
+      }
+    }
+    client {
+      id
+      person {
+        id
+        full_name
+      }
+    }
+  }
+}

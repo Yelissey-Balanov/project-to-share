@@ -1,0 +1,42 @@
+#import "../../fragments/ModificationHistory.gql"
+#import "../../fragments/GetCandidates.gql"
+#import "../../fragments/GetClients.gql"
+#import "../../fragments/GetCompanies.gql"
+#import "../../fragments/GetProjects.gql"
+
+query GetBucketForView($id: ObfId!) {
+  bucket(id: $id) {
+    id
+    title
+    notes
+    candidates {
+      ...GetCandidates
+    }
+    clients {
+      ...GetClients
+    }
+    companies {
+      ...GetCompanies
+    }
+    projects {
+      ...GetProjects
+    }
+    owner {
+      id
+      firstname
+      lastname
+    }
+
+    shared_with {
+      id
+      firstname
+      lastname
+      bucket_user_permission {
+        is_write_allowed
+      }
+    }
+    histories {
+      ...ModificationHistory
+    }
+  }
+}

@@ -1,0 +1,7 @@
+mutation CreateIndustry($input: CreateIndustryInput!) {
+  createIndustry(input: $input) {
+    id
+    title
+    is_reviewed
+  }
+}

@@ -1,0 +1,5 @@
+mutation DeleteChPodcast($id: ObfId!) {
+    deleteChPodcast(id: $id) {
+        id
+    }
+}

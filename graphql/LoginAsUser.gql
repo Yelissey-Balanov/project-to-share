@@ -1,0 +1,5 @@
+mutation LoginAsUser($userId: ObfId!){
+    loginAsUser(userId: $userId) {
+      userId
+    }
+}

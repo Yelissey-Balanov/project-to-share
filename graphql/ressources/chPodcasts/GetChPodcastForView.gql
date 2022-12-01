@@ -1,0 +1,22 @@
+#import "../../fragments/ImageSizeFormat.gql"
+
+query GetChPodcastForView ($id: ObfId!){
+  chPodcast(id: $id) {
+    id
+    title
+    description
+    rss_title
+    rss_description
+    duration
+    public_url
+    category
+    image {
+      id
+      sizes {
+        CH_PODCAST_FULL {
+          ...ImageSizeFormat
+        }
+      }
+    }
+  }
+}

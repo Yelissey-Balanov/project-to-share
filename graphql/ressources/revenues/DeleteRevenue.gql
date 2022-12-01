@@ -1,0 +1,5 @@
+mutation DeleteRevenue($id: ObfId!) {
+    deleteRevenue(id: $id) {
+        id
+    }
+}

@@ -1,0 +1,6 @@
+mutation SetSettings($reportReadyToInvoiceRevenueTo: JSON) {
+  reportReadyToInvoiceRevenueTo: setSetting(key: "reportReadyToInvoiceRevenueTo", value: $reportReadyToInvoiceRevenueTo) {
+    key
+    value
+  }
+}

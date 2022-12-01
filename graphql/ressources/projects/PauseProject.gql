@@ -1,0 +1,7 @@
+mutation PauseProject($id: ObfId!, $note: String) {
+    pauseProject(id: $id, note: $note) {
+      id
+      status
+      status_note
+    }
+}

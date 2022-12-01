@@ -1,0 +1,5 @@
+mutation DeleteWorkingHours($id: ObfId!) {
+    deleteWorkingHours(id: $id) {
+        id
+    }
+}

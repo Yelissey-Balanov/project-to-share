@@ -1,0 +1,22 @@
+overwrite: true
+schema: "http://localhost:10081/graphql"
+documents: "./graphql/**/*.gql"
+generates:
+  graphql/GQLTypes.ts:
+    plugins:
+      - typescript
+      - typescript-operations
+    config:
+      scalars:
+        BigInt: number
+        ObfId: number
+#        Datetime: Date
+        DateTime: string
+        Date: string
+        Json: "{ [key: string]: any }"
+  schema.graphql:
+    plugins:
+      - schema-ast
+  graphql/fragmentTypes.json:
+    plugins:
+      - fragment-matcher

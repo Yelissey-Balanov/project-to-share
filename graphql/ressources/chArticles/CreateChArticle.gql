@@ -1,0 +1,5 @@
+mutation CreateChArticle($input: CreateChArticleInput!) {
+  createChArticle(input: $input) {
+    id
+  }
+}

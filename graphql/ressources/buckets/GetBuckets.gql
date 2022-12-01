@@ -1,0 +1,31 @@
+query GetBuckets {
+  me {
+    id
+    buckets {
+      id
+      title
+      notes
+      shared_with {
+        id
+        firstname
+        lastname
+        bucket_user_permission {
+          is_write_allowed
+        }
+      }
+    }
+    shared_buckets {
+      id
+      title
+      notes
+      bucket_user_permission {
+        is_write_allowed
+      }
+      owner {
+        id
+        firstname
+        lastname
+      }
+    }
+  }
+}

@@ -1,0 +1,8 @@
+mutation UpdateCandidateNotesWithinProject($candidateId: ObfId!, $projectId: ObfId!, $note: String) {
+  updateCandidateNotesWithinProject(candidateId: $candidateId, projectId: $projectId, note: $note) {
+    id
+    candidate_project_pivot {
+      client_notes
+    }
+  }
+}

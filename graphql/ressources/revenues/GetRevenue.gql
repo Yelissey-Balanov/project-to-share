@@ -1,0 +1,21 @@
+#import "../../fragments/Revenue.gql"
+
+query GetRevenue($id: ObfId!) {
+  revenue(id: $id) {
+    ...Revenue
+    project {
+      id
+      is_interim
+      is_permanent
+      users {
+        id
+        firstname
+        lastname
+        pivot {
+          percent
+          role
+        }
+      }
+    }
+  }
+}

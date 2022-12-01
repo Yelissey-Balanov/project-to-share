@@ -1,0 +1,24 @@
+#import "../../fragments/ImageSizeFormat.gql"
+#import "../../fragments/CropProps.gql"
+
+query GetChPodcastForEdit ($id: ObfId!){
+  chPodcast(id: $id) {
+    id
+    title
+    description
+    rss_title
+    rss_description
+    public_url
+    category
+    image {
+      id
+      sizes {
+        CH_PODCAST_FULL {
+          ...ImageSizeFormat
+          ...CropProps
+        }
+      }
+      original_image
+    }
+  }
+}

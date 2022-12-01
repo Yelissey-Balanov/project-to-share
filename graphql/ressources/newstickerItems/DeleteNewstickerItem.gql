@@ -1,0 +1,5 @@
+mutation DeleteNewstickerItem($id: ObfId!) {
+    deleteNewstickerItem(id: $id) {
+        id
+    }
+}

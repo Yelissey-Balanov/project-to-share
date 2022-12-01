@@ -1,0 +1,18 @@
+#import "../../fragments/EventEventable.gql"
+#import "../../fragments/EventWithUser.gql"
+
+query GetEventForOverviewModal($id: ObfId!) {
+  event(id: $id) {
+    id
+    ...EventEventable
+    ...EventWithUser
+    project {
+      id
+      title
+      company {
+        id
+        aliasOrName
+      }
+    }
+  }
+}

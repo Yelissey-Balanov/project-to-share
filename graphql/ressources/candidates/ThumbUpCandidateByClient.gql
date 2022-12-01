@@ -1,0 +1,15 @@
+#import "../../fragments/EventWithUser.gql"
+
+mutation ThumbUpCandidateByClient($candidateId: ObfId!, $projectId: ObfId!, $note: String) {
+  thumbUpCandidateByClient(candidateId: $candidateId, projectId: $projectId, note: $note) {
+    candidate {
+      id
+      candidate_project_pivot {
+        liked_by_client
+      }
+    }
+    event {
+      ...EventWithUser
+    }
+  }
+}

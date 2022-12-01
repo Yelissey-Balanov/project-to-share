@@ -1,0 +1,27 @@
+#import "../../fragments/ImageSizeFormat.gql"
+#import "../../fragments/CropProps.gql"
+
+query GetPeopleByName ($names: FirstAndLastname){
+  people(names: $names) {
+    id
+    title
+    firstname
+    lastname
+    birthdate
+    birth_name
+    gender
+    other_firstnames
+    foto {
+      id
+      sizes {
+        PROFILE_IMAGE {
+          ...ImageSizeFormat
+          ...CropProps
+        }
+      }
+      original_image
+    }
+    candidate_id
+    client_id
+  }
+}

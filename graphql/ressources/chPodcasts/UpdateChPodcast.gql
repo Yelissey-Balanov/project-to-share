@@ -1,0 +1,5 @@
+mutation UpdateChPodcast($id: ObfId!, $input: UpdateChPodcastInput!) {
+    updateChPodcast(id: $id, input: $input) {
+      id
+    }
+}

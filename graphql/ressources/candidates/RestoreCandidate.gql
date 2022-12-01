@@ -1,0 +1,5 @@
+mutation RestoreCandidate($id: ObfId!) {
+    restoreCandidate(id: $id, trashed: WITH) {
+        id
+    }
+}

@@ -1,0 +1,9 @@
+mutation RemoveCandidateFromShortlist($candidateId: ObfId!, $projectId: ObfId!) {
+  removeCandidateFromShortlist(candidateId: $candidateId, projectId: $projectId) {
+    id
+    candidate_project_pivot {
+      is_shortlisted
+      status
+    }
+  }
+}

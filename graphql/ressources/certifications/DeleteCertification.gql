@@ -1,0 +1,5 @@
+mutation DeleteCertification($id: ObfId!, $transferLinkedDataTo: ObfId) {
+    deleteCertification(id: $id, transferLinkedDataTo: $transferLinkedDataTo) {
+        id
+    }
+}

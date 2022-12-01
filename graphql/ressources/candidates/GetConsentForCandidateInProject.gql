@@ -1,0 +1,32 @@
+#import "../../fragments/ImageSizeFormat.gql"
+
+query GetConsentForCandidateInProject($candidateId: ObfId!, $projectId: ObfId!, $timestamp: String!) {
+  getConsentForCandidateInProject(candidateId: $candidateId, projectId: $projectId, timestamp: $timestamp) {
+    consented_at
+    contradicted_at
+    candidate {
+      id
+      person {
+        id
+        full_name
+      }
+    }
+    project {
+      id
+      title
+      company {
+        id
+        name
+        legal_form
+        logo {
+          id
+          sizes {
+            PROFILE_IMAGE {
+              ...ImageSizeFormat
+            }
+          }
+        }
+      }
+    }
+  }
+}

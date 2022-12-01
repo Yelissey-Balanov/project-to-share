@@ -1,0 +1,5 @@
+mutation RestoreProject($id: ObfId!) {
+    restoreProject(id: $id, trashed: WITH) {
+        id
+    }
+}

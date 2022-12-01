@@ -1,0 +1,14 @@
+query GetProjectsForAutocompleteForLonglist($candidateId: ObfId!) {
+  projectsForAutocompleteForLonglist(candidateId: $candidateId) {
+    id
+    title
+    is_interim
+    is_permanent
+    company {
+      id
+      name
+      legal_form
+    }
+    status
+  }
+}

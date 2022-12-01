@@ -1,0 +1,152 @@
+#import "../../fragments/ModificationHistory.gql"
+#import "../../fragments/Document.gql"
+#import "../../fragments/EventWithUserAndProject.gql"
+#import "../../fragments/ImageSizeFormat.gql"
+
+query GetCandidateForView($id: ObfId!) {
+  candidate(id: $id, trashed: WITH) {
+    id
+    person {
+      id
+      title
+      firstname
+      other_firstnames
+      lastname
+      full_name
+      birth_name
+      gender
+      birthdate
+      foto {
+        id
+        sizes {
+          PROFILE_IMAGE {
+            ...ImageSizeFormat
+          }
+        }
+      }
+      client_id
+    }
+    email
+    marital_status
+    is_blacklisted
+    blacklisting_reason
+    is_interim
+    is_permanent
+    skype_name
+    desired_job
+    max_distance_from_home
+    willing_to_travel
+    available_from
+    daily_rate
+    has_hourly_rate
+    expenses_included
+    period_of_notice
+    next_possible_notice_to
+    basic_salary
+    bonus_eur
+    is_business_car_included
+    other_bonus
+    notes
+    linked_in_profile
+    xing_profile
+    url
+    create_account_token
+    user_id
+    nationalities {
+      id
+      name
+    }
+    is_research
+    location {
+      id
+      full_address
+    }
+    phonenumbers {
+      id
+      country_code
+      dial_code
+      number
+      label
+    }
+    deleted_at
+    industries {
+      id
+      title
+    }
+    skills {
+      id
+      title
+    }
+    certifications {
+      id
+      title
+    }
+    it_skills {
+      id
+      title
+    }
+    projects {
+      id
+      title
+      status
+      created_at
+      deleted_at
+    }
+    worked_at_companies {
+      id
+      from
+      job_title
+      job_level
+      main_responsibilities
+      till
+      company {
+        id
+        name
+        logo {
+          id
+          sizes {
+            PROFILE_IMAGE {
+              regular
+              retina
+              thumbnail
+            }
+          }
+        }
+        deleted_at
+      }
+    }
+    languages {
+      code
+      name
+      language_pivot {
+        level
+      }
+    }
+    educations {
+      id
+      institution {
+        id
+        name
+      }
+      main_field_of_study
+      additional_fields_of_study
+      from
+      till
+      degree
+      final_grade
+      notes
+    }
+    caution
+    was_placed
+    zoom_id
+    events {
+      ...EventWithUserAndProject
+    }
+    documents {
+      ...Document
+    }
+    histories {
+      ...ModificationHistory
+    }
+  }
+}

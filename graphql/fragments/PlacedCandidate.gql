@@ -1,0 +1,36 @@
+#import "./ImageSizeFormat.gql"
+#import "./WorkingHours.gql"
+
+fragment PlacedCandidate on Candidate {
+  id
+  person {
+    id
+    gender
+    birthdate
+    full_name
+    foto {
+      id
+      sizes {
+        PROFILE_IMAGE {
+          ...ImageSizeFormat
+        }
+      }
+    }
+  }
+  deleted_at
+  is_permanent
+  is_interim
+  has_hourly_rate
+  candidate_project_pivot {
+    status
+    is_shortlisted
+    purchasing_daily_rate
+    retail_daily_rate
+    basic_salary
+    bonus_eur
+    liked_by_client
+  }
+  working_hours(project_id: $projectId) {
+    ...WorkingHours
+  }
+}

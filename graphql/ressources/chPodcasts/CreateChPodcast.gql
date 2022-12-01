@@ -1,0 +1,5 @@
+mutation CreateChPodcast($input: CreateChPodcastInput!) {
+  createChPodcast(input: $input) {
+    id
+  }
+}

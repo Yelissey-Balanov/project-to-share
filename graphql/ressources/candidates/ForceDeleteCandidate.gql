@@ -1,0 +1,5 @@
+mutation ForceDeleteCandidate($id: ObfId!) {
+    forceDeleteCandidate(id: $id, trashed: WITH) {
+        id
+    }
+}

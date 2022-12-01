@@ -1,0 +1,7 @@
+query GetAllInstitutions {
+  allInstitutions(orderBy: [{column: "name", order: ASC}]) {
+    id
+    name
+    is_reviewed
+  }
+}

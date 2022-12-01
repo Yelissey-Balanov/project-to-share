@@ -1,0 +1,101 @@
+#import "../../fragments/ImageSizeFormat.gql"
+#import "../../fragments/PlacedCandidate.gql"
+
+query GetProjectForCandidate($projectId: ObfId!) {
+  project(id: $projectId) {
+    id
+    status
+    is_interim
+    is_permanent
+    title
+    project_start
+    project_end
+    placed_start_at
+
+    industries {
+      id
+      title
+      synonyms {
+        id
+        title
+      }
+    }
+    skills {
+      id
+      title
+      synonyms {
+        id
+        title
+      }
+    }
+    certifications {
+      id
+      title
+    }
+    it_skills {
+      id
+      title
+      synonyms {
+        id
+        title
+      }
+    }
+    company {
+      id
+      aliasOrName
+      logo {
+        id
+        sizes {
+          PROFILE_IMAGE {
+            ...ImageSizeFormat
+          }
+        }
+      }
+    }
+    clients {
+      id
+      position
+      person {
+        id
+        full_name
+        foto {
+          id
+          sizes {
+            PROFILE_IMAGE {
+              ...ImageSizeFormat
+            }
+          }
+        }
+      }
+      deleted_at
+    }
+
+    languages {
+      code
+      name
+      language_pivot {
+        level
+      }
+    }
+
+    users {
+      id
+      firstname
+      lastname
+      contact_email
+      contact_number
+      foto {
+        id
+        sizes {
+          PROFILE_IMAGE {
+            ...ImageSizeFormat
+          }
+        }
+      }
+    }
+
+    placed_candidate {
+      ...PlacedCandidate
+    }
+  }
+}

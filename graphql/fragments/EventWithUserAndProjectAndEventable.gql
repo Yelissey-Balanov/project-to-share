@@ -1,0 +1,26 @@
+#import "./EventWithUserAndProject.gql"
+
+fragment EventWithUserAndProjectAndEventable on Event {
+  ...EventWithUserAndProject
+  eventable {
+    __typename
+    ... on Client {
+      id
+      person {
+        id
+        full_name
+      }
+    }
+    ... on Candidate {
+      id
+      person {
+        id
+        full_name
+      }
+    }
+    ... on Company {
+      id
+      aliasOrName
+    }
+  }
+}

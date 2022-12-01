@@ -1,0 +1,13 @@
+query GetCandidateContactData($id: ObfId!) {
+  candidate(id: $id) {
+    id
+    email
+    phonenumbers {
+      id
+      country_code
+      dial_code
+      number
+      label
+    }
+  }
+}

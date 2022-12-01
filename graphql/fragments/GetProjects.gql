@@ -1,0 +1,54 @@
+#import "../fragments/ImageSizeFormat.gql"
+fragment GetProjects on Project {
+  id
+  deleted_at
+  created_at
+  title
+  status
+  is_interim
+  is_permanent
+  archived_at
+  company {
+    id
+    aliasOrName
+    logo {
+      id
+      sizes {
+        PROFILE_IMAGE {
+          ...ImageSizeFormat
+        }
+      }
+    }
+  }
+  clients {
+    id
+    person {
+      id
+      full_name
+      foto {
+        id
+        sizes {
+          PROFILE_IMAGE {
+            ...ImageSizeFormat
+          }
+        }
+      }
+    }
+  }
+  candidates_count
+  shortlisted_candidates_count
+  updated_at
+  users {
+    id
+    firstname
+    lastname
+    foto {
+      id
+      sizes {
+        PROFILE_IMAGE {
+          ...ImageSizeFormat
+        }
+      }
+    }
+  }
+}

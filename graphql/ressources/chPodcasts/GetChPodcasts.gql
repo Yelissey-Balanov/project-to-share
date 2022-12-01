@@ -1,0 +1,8 @@
+query GetChPodcasts ($orderBy: [QueryChPodcastsOrderByOrderByClause!]){
+  chPodcasts(orderBy: $orderBy) {
+    id
+    title
+    description
+    duration
+  }
+}

@@ -1,0 +1,7 @@
+mutation UpdateItSkill($id: ObfId!, $input: UpdateItSkillInput!) {
+    updateItSkill(id: $id, input: $input) {
+      id
+      title
+      is_reviewed
+    }
+}

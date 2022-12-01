@@ -1,0 +1,46 @@
+#import "../fragments/ImageSizeFormat.gql"
+
+fragment GetClients on Client {
+  id
+  deleted_at
+  created_at
+  person {
+    id
+    full_name
+    candidate_id
+    foto {
+      id
+      sizes {
+        PROFILE_IMAGE {
+          ...ImageSizeFormat
+        }
+      }
+    }
+  }
+  user_id
+  email
+  position
+  company {
+    id
+    aliasOrName
+    legal_form
+    logo {
+      id
+      sizes {
+        PROFILE_IMAGE {
+          ...ImageSizeFormat
+        }
+      }
+    }
+  }
+  is_research
+  email
+  position
+  phonenumbers {
+    id
+    country_code
+    dial_code
+    number
+    label
+  }
+}

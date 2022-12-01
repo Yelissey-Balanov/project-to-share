@@ -1,0 +1,28 @@
+#import "./ImageSizeFormat.gql"
+
+fragment Revenue on Revenue {
+  id
+  author_id
+  amount
+  year
+  month
+  type
+  stage
+  revenue_users {
+    id
+    percent
+    user {
+      id
+      firstname
+      lastname
+      foto {
+        id
+        sizes {
+          PROFILE_IMAGE {
+            ...ImageSizeFormat
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,11 @@
+fragment ModificationHistory on History {
+  historiable_type
+  action
+  changes
+  changed_model
+  created_at
+  user {
+    firstname
+    lastname
+  }
+}

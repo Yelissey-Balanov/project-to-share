@@ -1,0 +1,14 @@
+fragment Document on Document {
+  id
+  title
+  mime_type
+  parsed_content
+  parsing_status
+  parsing_failure_reason
+  created_at
+  preview_path
+  tags {
+    id
+    title
+  }
+}

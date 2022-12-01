@@ -1,0 +1,27 @@
+query GetCandidatesForAutocomplete($anyName: String) {
+  candidates(
+    orderBy: [{ column: "people.lastname", order: ASC }, { column: "people.firstname", order: ASC }]
+    first: 50
+    anyName: $anyName
+  ) {
+    data {
+      id
+      person {
+        id
+        title
+        firstname
+        lastname
+        foto {
+          id
+          sizes {
+            PROFILE_IMAGE {
+              regular
+              retina
+              thumbnail
+            }
+          }
+        }
+      }
+    }
+  }
+}

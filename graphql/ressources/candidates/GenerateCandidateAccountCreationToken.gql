@@ -1,0 +1,7 @@
+mutation GenerateCandidateAccountCreationToken($candidate_id: ObfId!) {
+  generateCandidateAccountCreationToken(candidate_id: $candidate_id) {
+    id
+    create_account_token
+    user_id
+  }
+}

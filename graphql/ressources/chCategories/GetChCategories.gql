@@ -1,0 +1,7 @@
+query GetChCategories ($orderBy: [QueryChCategoriesOrderByOrderByClause!]){
+  chCategories(orderBy: $orderBy) {
+    id
+    title
+    short_text
+  }
+}

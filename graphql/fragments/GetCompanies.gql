@@ -1,0 +1,36 @@
+#import "../fragments/ImageSizeFormat.gql"
+fragment GetCompanies on Company {
+  id
+  deleted_at
+  created_at
+  alias
+  aliasOrName
+  name
+  website
+  jobs_external_link
+  legal_form
+  logo {
+    id
+    sizes {
+      PROFILE_IMAGE {
+        ...ImageSizeFormat
+      }
+    }
+  }
+  industries {
+    id
+    title
+  }
+  locations {
+    id
+    full_address
+    label
+  }
+  phonenumbers {
+    id
+    country_code
+    dial_code
+    number
+    label
+  }
+}

@@ -1,0 +1,29 @@
+#import "../../fragments/Paginator.gql"
+#import "../../fragments/Revenue.gql"
+
+query GetRevenues($orderBy: [OrderByClause!], $first: Int!, $page: Int, $filter: RevenuesFilter) {
+  revenues(orderBy: $orderBy, first: $first, page: $page, filter: $filter) {
+    data {
+      ...Revenue
+      project {
+        id
+        title
+        company {
+          id
+          aliasOrName
+          logo {
+            id
+            sizes {
+              PROFILE_IMAGE {
+                ...ImageSizeFormat
+              }
+            }
+          }
+        }
+      }
+    }
+    paginatorInfo {
+      ...Paginator
+    }
+  }
+}

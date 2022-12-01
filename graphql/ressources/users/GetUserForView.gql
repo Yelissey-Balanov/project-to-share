@@ -1,0 +1,22 @@
+#import "../../fragments/ImageSizeFormat.gql"
+
+query GetUserForView($id: ObfId!) {
+  user(id: $id) {
+    id
+    firstname
+    lastname
+    contact_email
+    contact_number
+    email
+    roles
+    created_at
+    foto {
+      id
+      sizes {
+        PROFILE_IMAGE {
+          ...ImageSizeFormat
+        }
+      }
+    }
+  }
+}

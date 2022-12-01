@@ -1,0 +1,7 @@
+#import "../../fragments/WorkingHours.gql"
+
+mutation CreateWorkingHours($input: CreateWorkingHoursInput!) {
+  createWorkingHours(input: $input) {
+    ...WorkingHours
+  }
+}

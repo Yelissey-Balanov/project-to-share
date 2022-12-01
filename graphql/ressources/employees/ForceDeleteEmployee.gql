@@ -1,0 +1,5 @@
+mutation ForceDeleteEmployee($id: ObfId!) {
+    forceDeleteEmployee(id: $id, trashed: WITH) {
+        id
+    }
+}

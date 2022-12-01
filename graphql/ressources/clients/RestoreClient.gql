@@ -1,0 +1,5 @@
+mutation RestoreClient($id: ObfId!) {
+    restoreClient(id: $id, trashed: WITH) {
+        id
+    }
+}

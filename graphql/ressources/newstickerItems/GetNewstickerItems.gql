@@ -1,0 +1,17 @@
+#import "../../fragments/Paginator.gql"
+
+query GetNewstickerItems($orderBy: [QueryNewstickerItemsOrderByOrderByClause!], $status: [NewstickerItemStatus!], $first: Int!, $page: Int ) {
+  newstickerItems(orderBy: $orderBy, first: $first, page: $page, status: $status) {
+    data {
+      id
+      title
+      source
+      published_at
+      status
+      url
+    }
+    paginatorInfo {
+      ...Paginator
+    }
+  }
+}

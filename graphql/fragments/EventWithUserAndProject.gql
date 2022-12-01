@@ -1,0 +1,17 @@
+fragment EventWithUserAndProject on Event {
+  id
+  group
+  type
+  notes
+  happened_at
+  user {
+    id
+    firstname
+    lastname
+  }
+  project {
+    id
+    title
+    deleted_at
+  }
+}

@@ -1,0 +1,5 @@
+mutation CreateUserForCandidate($candidate_id: ObfId!, $token: String!, $email: String!, $password: String!) {
+  createUserForCandidate(candidate_id: $candidate_id, token: $token, email: $email, password: $password) {
+    id
+  }
+}

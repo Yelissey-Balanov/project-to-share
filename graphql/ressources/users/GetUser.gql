@@ -1,0 +1,24 @@
+#import "../../fragments/ImageSizeFormat.gql"
+#import "../../fragments/CropProps.gql"
+query GetUser($id: ObfId!) {
+  user(id: $id) {
+    id
+    firstname
+    lastname
+    contact_email
+    contact_number
+    email
+    roles
+
+    foto {
+      id
+      sizes {
+        PROFILE_IMAGE {
+          ...ImageSizeFormat
+          ...CropProps
+        }
+      }
+      original_image
+    }
+  }
+}

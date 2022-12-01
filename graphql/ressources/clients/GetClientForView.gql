@@ -1,0 +1,70 @@
+#import "../../fragments/ModificationHistory.gql"
+#import "../../fragments/EventWithUserAndProject.gql"
+#import "../../fragments/ImageSizeFormat.gql"
+
+query GetClientForView($id: ObfId!) {
+  client(id: $id, trashed: WITH) {
+    id
+    person {
+      id
+      title
+      firstname
+      other_firstnames
+      lastname
+      birth_name
+      full_name
+      gender
+      birthdate
+      foto {
+        id
+        sizes {
+          PROFILE_IMAGE {
+            ...ImageSizeFormat
+          }
+        }
+      }
+      candidate_id
+    }
+    email
+    deleted_at
+    position
+    location {
+      id
+      full_address
+    }
+    phonenumbers {
+      id
+      country_code
+      dial_code
+      number
+      label
+    }
+    company {
+      id
+      name
+      legal_form
+      deleted_at
+    }
+    need_review_after_autocomplete
+    projects(page: 1) {
+      data {
+        id
+        title
+        status
+        created_at
+        deleted_at
+      }
+    }
+    notes
+    is_research
+    events {
+      ...EventWithUserAndProject
+    }
+    user_id
+    zoom_id
+    create_account_token
+    histories {
+      ...ModificationHistory
+    }
+  }
+}

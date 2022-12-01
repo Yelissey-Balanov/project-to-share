@@ -1,0 +1,8 @@
+#import "../../fragments/EventWithUserAndProjectAndEventable.gql"
+
+query GetEvent($id: ObfId!) {
+  event(id: $id) {
+    id
+    ...EventWithUserAndProjectAndEventable
+  }
+}

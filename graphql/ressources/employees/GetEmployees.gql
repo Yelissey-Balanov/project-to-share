@@ -1,0 +1,16 @@
+#import "../../fragments/Paginator.gql"
+
+query GetEmployees ($orderBy: [OrderByClause!], $first: Int!, $page: Int, $where: QueryEmployeesWhereWhereConditions){
+  employees(orderBy: $orderBy, first: $first, page: $page, where: $where) {
+    data {
+      id
+      vorname
+      familienname
+      berufsbezeichnung
+      personalnummer
+    }
+    paginatorInfo {
+      ...Paginator
+    }
+  }
+}

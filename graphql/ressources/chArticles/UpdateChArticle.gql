@@ -1,0 +1,5 @@
+mutation UpdateChArticle($id: ObfId!, $input: UpdateChArticleInput!) {
+    updateChArticle(id: $id, input: $input) {
+      id
+    }
+}

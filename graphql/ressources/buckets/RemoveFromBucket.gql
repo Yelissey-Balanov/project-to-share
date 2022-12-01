@@ -1,0 +1,5 @@
+mutation RemoveFromBucket($id: ObfId!, $input: AddToBucketInput!) {
+    removeFromBucket(id: $id, input: $input) {
+      id
+    }
+}

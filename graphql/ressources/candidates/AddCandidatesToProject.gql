@@ -1,0 +1,3 @@
+mutation AddCandidatesToProject($candidateIds: [ObfId!]!, $projectId: ObfId!) {
+  addCandidatesToProject(candidateIds: $candidateIds, projectId: $projectId)
+}

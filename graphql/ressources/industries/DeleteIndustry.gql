@@ -1,0 +1,5 @@
+mutation DeleteIndustry($id: ObfId!, $transferLinkedDataTo: ObfId) {
+    deleteIndustry(id: $id, transferLinkedDataTo: $transferLinkedDataTo) {
+        id
+    }
+}

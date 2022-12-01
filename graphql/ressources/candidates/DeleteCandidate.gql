@@ -1,0 +1,5 @@
+mutation DeleteCandidate($id: ObfId!) {
+    deleteCandidate(id: $id) {
+        id
+    }
+}

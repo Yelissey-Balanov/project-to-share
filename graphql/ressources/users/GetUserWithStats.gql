@@ -1,0 +1,38 @@
+#import "../../fragments/EventWithUserAndProjectAndEventable.gql"
+#import "../../fragments/GetClients.gql"
+#import "../../fragments/GetCandidates.gql"
+#import "../../fragments/GetCompanies.gql"
+#import "../../fragments/GetProjects.gql"
+
+query GetUserWithStats($id: ObfId!, $from: DateRequestTz!, $till: DateRequestTz!) {
+  user(id: $id) {
+    id
+    firstname
+    lastname
+    stats(from: $from, till: $till) {
+      createdCandidates {
+        ...GetCandidates
+      }
+
+      createdClients {
+        ...GetClients
+      }
+
+      createdCompanies {
+        ...GetCompanies
+      }
+
+      createdProjects {
+        ...GetProjects
+      }
+
+      createdEvents {
+        ...EventWithUserAndProjectAndEventable
+      }
+
+      happenedEvents {
+        ...EventWithUserAndProjectAndEventable
+      }
+    }
+  }
+}

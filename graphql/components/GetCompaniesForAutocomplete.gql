@@ -1,0 +1,9 @@
+query GetCompaniesForAutocomplete($name: String, $orderBy: [OrderByClause!]) {
+  companies(name: $name, orderBy: $orderBy, first: 100) {
+    data {
+      id
+      name
+      legal_form
+    }
+  }
+}

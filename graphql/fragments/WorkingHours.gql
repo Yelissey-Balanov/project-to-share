@@ -1,0 +1,24 @@
+fragment WorkingHours on WorkingHours {
+  id
+  billing_type
+  purchasing_per_unit
+  retail_per_unit
+  status
+  status_note
+  client_approved_at
+  client_declined_at
+  candidate_approved_at
+  candidate_declined_at
+  requested_at
+  updated_at
+  units {
+    date
+    hours
+    note
+  }
+  units_diff {
+    new
+    changed
+    removed
+  }
+}

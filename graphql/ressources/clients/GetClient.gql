@@ -1,0 +1,50 @@
+#import "../../fragments/ImageSizeFormat.gql"
+#import "../../fragments/CropProps.gql"
+
+query GetClient($id: ObfId!) {
+  client(id: $id) {
+    id
+    person {
+      id
+      title
+      firstname
+      other_firstnames
+      lastname
+      birth_name
+      gender
+      birthdate
+      foto {
+        id
+        sizes {
+          PROFILE_IMAGE {
+            ...ImageSizeFormat
+            ...CropProps
+          }
+        }
+        original_image
+      }
+    }
+    email
+    position
+    location {
+      id
+      full_address
+      label
+    }
+    phonenumbers {
+      id
+      country_code
+      dial_code
+      number
+      label
+    }
+    company {
+      id
+      name
+    }
+    notes
+    is_research
+    zoom_id
+    deleted_at
+  }
+}

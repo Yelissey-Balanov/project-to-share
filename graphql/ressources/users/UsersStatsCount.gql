@@ -1,0 +1,15 @@
+query UsersStatsCount($from: DateRequestTz!, $till: DateRequestTz!) {
+  usersStatsCount(from: $from, till: $till) {
+    user {
+      id
+      firstname
+      lastname
+    }
+    createdCandidates
+    createdClients
+    createdCompanies
+    createdProjects
+    createdEvents
+    happenedEvents
+  }
+}

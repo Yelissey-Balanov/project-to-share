@@ -1,0 +1,5 @@
+mutation DeleteInstitution($id: ObfId!, $transferLinkedDataTo: ObfId) {
+    deleteInstitution(id: $id, transferLinkedDataTo: $transferLinkedDataTo) {
+        id
+    }
+}

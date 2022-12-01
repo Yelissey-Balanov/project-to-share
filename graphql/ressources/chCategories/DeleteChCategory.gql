@@ -1,0 +1,5 @@
+mutation DeleteChCategory($id: ObfId!) {
+    deleteChCategory(id: $id) {
+        id
+    }
+}

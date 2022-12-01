@@ -1,0 +1,7 @@
+mutation UpdateInstitution($id: ObfId!, $input: UpdateInstitutionInput!) {
+    updateInstitution(id: $id, input: $input) {
+      id
+      name
+      is_reviewed
+    }
+}

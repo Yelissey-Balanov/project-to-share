@@ -1,0 +1,9 @@
+mutation GeneratePublicDocumentLink($document_id: ObfId!, $expires_after_days: Int!) {
+  generatePublicDocumentLink(document_id: $document_id, expires_after_days: $expires_after_days) {
+    id
+    URL
+    token
+    views
+    expires_at
+  }
+}

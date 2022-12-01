@@ -1,0 +1,108 @@
+#import "./ImageSizeFormat.gql"
+
+fragment ProjectDataForClientViews on Project {
+  id
+  status
+  status_note
+  is_interim
+  is_permanent
+  title
+  max_basic_salary
+  max_bonus_eur
+  is_business_car_included
+  fee_structure
+  expenses_included
+  max_daily_rate
+  retain
+  project_start
+  project_end
+  placed_start_at
+  notes
+
+  industries {
+    id
+    title
+    synonyms {
+      id
+      title
+    }
+  }
+  skills {
+    id
+    title
+    synonyms {
+      id
+      title
+    }
+  }
+  certifications {
+    id
+    title
+  }
+  it_skills {
+    id
+    title
+    synonyms {
+      id
+      title
+    }
+  }
+  company {
+    id
+    aliasOrName
+    logo {
+      id
+      sizes {
+        PROFILE_IMAGE {
+          ...ImageSizeFormat
+        }
+      }
+    }
+    deleted_at
+  }
+  clients {
+    id
+    position
+    person {
+      id
+      full_name
+      foto {
+        id
+        sizes {
+          PROFILE_IMAGE {
+            ...ImageSizeFormat
+          }
+        }
+      }
+    }
+    deleted_at
+    client_project_pivot {
+      has_long_list_access
+    }
+    user_id
+  }
+
+  languages {
+    code
+    name
+    language_pivot {
+      level
+    }
+  }
+
+  users {
+    id
+    firstname
+    lastname
+    contact_email
+    contact_number
+    foto {
+      id
+      sizes {
+        PROFILE_IMAGE {
+          ...ImageSizeFormat
+        }
+      }
+    }
+  }
+}

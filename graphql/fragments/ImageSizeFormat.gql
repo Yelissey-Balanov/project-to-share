@@ -1,0 +1,5 @@
+fragment ImageSizeFormat on ImageSizeFormat {
+  regular
+  retina
+  thumbnail
+}

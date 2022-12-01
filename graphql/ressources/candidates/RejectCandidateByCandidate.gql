@@ -1,0 +1,16 @@
+#import "../../fragments/EventWithUser.gql"
+
+mutation RejectCandidateByCandidate($candidateId: ObfId!, $projectId: ObfId!, $note: String) {
+  rejectCandidateByCandidate(candidateId: $candidateId, projectId: $projectId, note: $note) {
+    candidate {
+      id
+      candidate_project_pivot {
+        is_shortlisted
+        status
+      }
+    }
+    event {
+      ...EventWithUser
+    }
+  }
+}

@@ -1,0 +1,30 @@
+#import "../../fragments/ImageSizeFormat.gql"
+
+query GetChArticleForView ($id: ObfId!){
+  chArticle(id: $id) {
+    id
+    title
+    content
+    category
+    author
+    author_position
+    author_company
+    image_copyright
+    image {
+      id
+      sizes {
+        CH_ARTICLE_FULL {
+          ...ImageSizeFormat
+        }
+      }
+    }
+    author_image {
+      id
+      sizes {
+        CH_ARTICLE_AUTHOR {
+          ...ImageSizeFormat
+        }
+      }
+    }
+  }
+}

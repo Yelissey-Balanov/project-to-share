@@ -1,0 +1,26 @@
+#import "../../fragments/Revenue.gql"
+
+query DashboardData($where: UserRevenuesWhereWhereConditions) {
+  me {
+    id
+    revenues(where: $where) {
+      ...Revenue
+      project {
+        id
+        title
+        company {
+          id
+          aliasOrName
+          logo {
+            id
+            sizes {
+              PROFILE_IMAGE {
+                ...ImageSizeFormat
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

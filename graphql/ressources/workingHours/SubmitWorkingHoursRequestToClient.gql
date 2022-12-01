@@ -1,0 +1,7 @@
+#import "../../fragments/WorkingHours.gql"
+
+mutation SubmitWorkingHoursRequestToClient($input: UpdateWorkingHoursInput!) {
+  submitWorkingHoursRequestToClient(input: $input) {
+    ...WorkingHours
+  }
+}

@@ -1,0 +1,7 @@
+mutation UpdateCertification($id: ObfId!, $input: UpdateCertificationInput!) {
+    updateCertification(id: $id, input: $input) {
+      id
+      title
+      is_reviewed
+    }
+}

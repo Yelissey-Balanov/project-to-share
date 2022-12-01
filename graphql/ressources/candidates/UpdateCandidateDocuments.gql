@@ -1,0 +1,5 @@
+mutation UpdateCandidateDocuments($id: ObfId!, $input: UpdateDocumentsRelationInput!) {
+  updateCandidateDocuments(id: $id, input: $input) {
+    id
+  }
+}

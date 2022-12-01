@@ -1,0 +1,25 @@
+query GetRevenueInvoiceData($id: ObfId!) {
+  revenue(id: $id) {
+    id
+    month
+    year
+    type
+    stage
+    amount
+    project {
+      id
+      ir_name
+      ir_email
+      ir_phone
+      ir_vat
+      ir_po
+      ir_address
+      title
+
+      company {
+        id
+        aliasOrName
+      }
+    }
+  }
+}

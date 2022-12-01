@@ -1,0 +1,6 @@
+mutation CreateBucket($input: CreateBucketInput!) {
+    createBucket(input: $input) {
+      id
+      title
+    }
+}

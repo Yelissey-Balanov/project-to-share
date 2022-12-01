@@ -1,0 +1,10 @@
+query GetNewstickerItemForEdit($id: ObfId!) {
+  newstickerItem(id: $id) {
+    id
+    title
+    source
+    published_at
+    status
+    url
+  }
+}

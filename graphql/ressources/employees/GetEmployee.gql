@@ -1,0 +1,82 @@
+#import "../../fragments/Document.gql"
+
+query GetEmployee($id: ObfId!) {
+  employee(id: $id, trashed: WITH) {
+    id
+    user {
+      id
+      firstname
+      lastname
+    }
+    personalnummer
+    betr_personalnummer
+    familienname
+    geburtsname
+    vorname
+    geburtsdatum
+    geschlecht
+    versicherungsnummer
+    geburtsort
+    familienstand
+    schwerbehindert
+    iban
+    bic
+    eintrittsdatum
+    ersteintrittsdatum
+    betriebsstaette
+    berufsbezeichnung
+    ausgeuebte_taetigkeit
+    beschaeftigungsart
+    probezeit
+    probezeit_dauer
+    weitere_beschaeftigungen
+    ist_weitere_beschaeftigung_geringfuegig
+    hoechster_schullabschluss
+    hoechste_berufsausbildung
+    beginn_der_ausbildung
+    voraussichtliches_ende_der_ausbildung
+    im_baugewerbe_seit
+    woechentliche_arbeitszeit
+    verteilung_der_woechentlichen_arbeitszeit
+    urlaubsanspruch
+    ist_befristet
+    ist_zweckbefristet
+    befristung_arbeitsvertrag_zum
+    schrieftlicher_abschluss_des_befristeten_arbeitsvertrages
+    abschluss_arbeitsvertrag_am
+    befristet_mit_aussicht
+    ich_wiederspreche_bea_an_bafa
+    identifikationsnummer
+    finanzamt_nummer
+    steuerklasse_faktor
+    kinderfreibetraege
+    konfession
+    gesetzliche_krankenkasse
+    elterneigenschaft
+    entl_bezeichnung
+    entl_betrag
+    entl_gueltig_ab
+    stundenlohn
+    stundenlohn_gueltig_ab
+    vwl_empfaenger
+    vwl_betrag
+    vwl_ag_anteil
+    vwl_seit_wann
+    vwl_vertragsnummer
+    vwl_iban
+    vwl_bic
+    steuerpflichtige_vorbeschaeftigung_im_laufenden_kalenderjahr
+    staatsangehoerigkeit {
+      id
+      name
+    }
+    location {
+      id
+      full_address
+    }
+    documents {
+      ...Document
+    }
+    deleted_at
+  }
+}

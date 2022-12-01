@@ -1,0 +1,5 @@
+mutation ContradictCandidateInProject($candidateId: ObfId!, $projectId: ObfId!, $timestamp: String!) {
+  contradictCandidateInProject(candidateId: $candidateId, projectId: $projectId, timestamp: $timestamp) {
+    contradicted_at
+  }
+}

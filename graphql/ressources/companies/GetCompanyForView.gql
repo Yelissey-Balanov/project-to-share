@@ -1,0 +1,93 @@
+#import "../../fragments/ModificationHistory.gql"
+#import "../../fragments/Document.gql"
+#import "../../fragments/ImageSizeFormat.gql"
+#import "../../fragments/EventWithUser.gql"
+#import "../../fragments/EventEventable.gql"
+
+query GetCompanyForView($id: ObfId!) {
+  company(id: $id, trashed: WITH) {
+    id
+    alias
+    name
+    legal_form
+    aliasOrName
+    website
+    email
+    employees_count
+    annual_sales
+    about
+    logo {
+      id
+      sizes {
+        PROFILE_IMAGE {
+          ...ImageSizeFormat
+        }
+      }
+    }
+    industries {
+      id
+      title
+    }
+    locations {
+      id
+      full_address
+      label
+    }
+    phonenumbers {
+      id
+      country_code
+      dial_code
+      number
+      label
+    }
+    clients {
+      id
+      person {
+        id
+        title
+        firstname
+        lastname
+        foto {
+          id
+          sizes {
+            PROFILE_IMAGE {
+              ...ImageSizeFormat
+            }
+          }
+        }
+      }
+      position
+      deleted_at
+    }
+    candidatesCount
+    parent_company {
+      id
+      name
+      legal_form
+    }
+    child_companies {
+      id
+      name
+      legal_form
+    }
+    documents {
+      ...Document
+    }
+    eventsInclClients {
+      ...EventWithUser
+      ...EventEventable
+      project {
+        id
+        title
+        deleted_at
+      }
+    }
+    need_review_after_autocomplete
+    jobs_external_link
+    invoice_notes
+    histories {
+      ...ModificationHistory
+    }
+    deleted_at
+  }
+}

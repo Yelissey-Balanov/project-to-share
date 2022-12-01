@@ -1,0 +1,5 @@
+mutation DeleteBucket($id: ObfId!) {
+    deleteBucket(id: $id) {
+        id
+    }
+}

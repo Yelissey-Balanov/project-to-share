@@ -1,0 +1,21 @@
+{
+  "__schema": {
+    "types": [
+      {
+        "kind": "UNION",
+        "name": "Eventable",
+        "possibleTypes": [
+          {
+            "name": "Client"
+          },
+          {
+            "name": "Candidate"
+          },
+          {
+            "name": "Company"
+          }
+        ]
+      }
+    ]
+  }
+}

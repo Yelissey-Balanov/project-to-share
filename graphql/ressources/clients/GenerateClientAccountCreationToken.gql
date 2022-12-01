@@ -1,0 +1,7 @@
+mutation GenerateClientAccountCreationToken($client_id: ObfId!) {
+  generateClientAccountCreationToken(client_id: $client_id) {
+    id
+    create_account_token
+    user_id
+  }
+}

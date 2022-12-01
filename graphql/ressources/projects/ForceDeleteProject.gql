@@ -1,0 +1,5 @@
+mutation ForceDeleteProject($id: ObfId!) {
+    forceDeleteProject(id: $id, trashed: WITH) {
+        id
+    }
+}

@@ -1,0 +1,6 @@
+mutation UnarchiveProject($id: ObfId!) {
+    unarchiveProject(id: $id) {
+      id
+      archived_at
+    }
+}

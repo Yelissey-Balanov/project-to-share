@@ -1,0 +1,3 @@
+query GetDocumentPreviewLinkByToken($id: ObfId!, $token: String!, $password: String!) {
+  getDocumentPreviewLinkByToken(id: $id, token: $token, password: $password)
+}

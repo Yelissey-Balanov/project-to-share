@@ -1,0 +1,7 @@
+mutation CreateInstitution($input: CreateInstitutionInput!) {
+  createInstitution(input: $input) {
+    id
+    name
+    is_reviewed
+  }
+}

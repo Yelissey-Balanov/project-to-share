@@ -1,0 +1,8 @@
+mutation CreateCandidate($input: CreateCandidateInput!) {
+    createCandidate(input: $input) {
+      id
+      person {
+        id
+      }
+    }
+}

@@ -1,0 +1,13 @@
+query GetRevenueChartDataSum($year: Int) {
+  revenueChartDataSum(year: $year) {
+    id
+    month
+    year
+    stats {
+      FORECAST
+      READY_TO_INVOICE
+      INVOICE_SENT
+      PAID
+    }
+  }
+}

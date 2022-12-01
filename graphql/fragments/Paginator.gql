@@ -1,0 +1,6 @@
+fragment Paginator on PaginatorInfo {
+  currentPage
+  lastPage
+  perPage
+  total
+}

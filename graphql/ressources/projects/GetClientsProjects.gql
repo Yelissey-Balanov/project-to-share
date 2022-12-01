@@ -1,0 +1,71 @@
+#import "../../fragments/ImageSizeFormat.gql"
+
+query GetClientsProjects {
+  me {
+    id
+    client {
+      id
+      active_projects(first: 100, page: 1) {
+        data {
+          ...ClientProject
+        }
+      }
+      runner_projects(first: 100, page: 1) {
+        data {
+          ...ClientProject
+        }
+      }
+    }
+  }
+}
+
+fragment ClientProject on Project {
+  id
+  title
+  status
+  is_interim
+  is_permanent
+  company {
+    id
+    aliasOrName
+    logo {
+      id
+      sizes {
+        PROFILE_IMAGE {
+          ...ImageSizeFormat
+        }
+      }
+    }
+  }
+  clients {
+    id
+    person {
+      id
+      full_name
+      foto {
+        id
+        sizes {
+          PROFILE_IMAGE {
+            ...ImageSizeFormat
+          }
+        }
+      }
+    }
+  }
+  candidates_count
+  shortlisted_candidates_count
+  updated_at
+  users {
+    id
+    firstname
+    lastname
+    foto {
+      id
+      sizes {
+        PROFILE_IMAGE {
+          ...ImageSizeFormat
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,34 @@
+query GetChCategoryForEdit ($id: ObfId!){
+  chCategory(id: $id) {
+    id
+    title
+    short_text
+    long_text
+    candidates {
+      id
+      person {
+        id
+        title
+        firstname
+        lastname
+        foto {
+          id
+          sizes {
+            PROFILE_IMAGE {
+              regular
+              retina
+              thumbnail
+            }
+          }
+        }
+      }
+      candidate_ch_category_pivot {
+        text
+        phonenumber
+        email
+        work_place
+        work_time
+      }
+    }
+  }
+}

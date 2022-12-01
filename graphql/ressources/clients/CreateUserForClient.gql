@@ -1,0 +1,5 @@
+mutation CreateUserForClient($client_id: ObfId!, $token: String!, $email: String!, $password: String!) {
+  createUserForClient(client_id: $client_id, token: $token, email: $email, password: $password) {
+    id
+  }
+}

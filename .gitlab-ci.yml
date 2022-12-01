@@ -1,0 +1,114 @@
+image: node:14
+
+before_script:
+  ## Install ssh-agent if not already installed, it is required by Docker.
+  - which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )
+
+  ## Run ssh-agent (inside the build environment)
+  - eval $(ssh-agent -s)
+
+  ## Create the SSH directory and give it the right permissions
+  - mkdir -p ~/.ssh
+  - chmod 700 ~/.ssh
+
+  ## store host keys, so git and ssh don't fail
+  ## 217.160.40.20 - bbi server
+  - ssh-keyscan 217.160.40.20 > ~/.ssh/known_hosts
+  - ssh-keyscan stella.one > ~/.ssh/known_hosts
+
+  ## Add the SSH key stored in SSH_PRIVATE_KEY variable to the agent store
+  ## We're using tr to fix line endings which makes ed25519 keys work
+  ## without extra base64 encoding.
+  ## https://gitlab.com/gitlab-examples/ssh-private-key/issues/1#note_48526556
+  - echo "$SSH_PRIVATE_KEY_BBI" | tr -d '\r' | ssh-add - > /dev/null
+
+
+build-and-deploy-staging:
+  stage: build
+  only:
+    - development
+  variables:
+    REMOTE_HOST: deployer@stella.one
+    DEPLOY_PATH: /var/www/staging.stella.one/nuxt-client
+    SERVER_PATH: /var/www/staging.stella.one/server
+  cache:
+    key: ${CI_COMMIT_REF_SLUG}
+    paths:
+      - node_modules/
+  script:
+    # install all dependencies to create a build
+    - yarn
+    # generate build
+    - mv nuxt.runtimeConfig.js.example nuxt.runtimeConfig.js
+    - yarn run build-prod
+    # create dist order and move all necessary files inside
+    - mkdir dist
+    - mv .nuxt dist/.nuxt
+    - mv static dist/static
+    - mv ecosystem.config.staging.js dist/ecosystem.config.js
+    - mv nuxt.config.ts dist/nuxt.config.ts
+    - mv package.json dist/package.json
+    - mv tsconfig.json dist/tsconfig.json
+    - mv yarn.lock dist/yarn.lock
+    # deploy to server and install packages on server. .nuxt folder should be copied explicit, as it is ignored by scp
+    - export DEPLOY_TIME=$(TZ="Europe/Berlin" date +%Y-%m-%d_%H-%M-%S)
+    - export RELEASE_PATH=$DEPLOY_PATH/releases/$DEPLOY_TIME
+    - ssh $REMOTE_HOST "mkdir -p $RELEASE_PATH"
+    - scp -r ./dist/* "$REMOTE_HOST:$RELEASE_PATH"
+    - scp -r ./dist/.nuxt "$REMOTE_HOST:$RELEASE_PATH"
+    - ssh $REMOTE_HOST "cd $RELEASE_PATH && ln -s ../../shared/nuxt.runtimeConfig.js nuxt.runtimeConfig.js"
+    - ssh $REMOTE_HOST "cd $RELEASE_PATH && yarn install --production=true"
+    # remove old releases
+    - ssh $REMOTE_HOST "cd $DEPLOY_PATH/releases && ls -t | sed -e '1,10d' | xargs -d '\n' rm -rf"
+    # replace current link
+    - ssh $REMOTE_HOST "cd $DEPLOY_PATH && ln -nfs releases/$DEPLOY_TIME current_tmp && mv -fT current_tmp current"
+    # restart server with pm2
+    - ssh $REMOTE_HOST "cd $DEPLOY_PATH && pm2 startOrReload current/ecosystem.config.js"
+    # notify clients about new version of frontend code
+    - export UPDATE_NOTE=$(awk -v a="$CI_COMMIT_MESSAGE" -v b="STELLA_UPDATE_NOTE" 'BEGIN{if (index(a,b) != 0) {print substr(a, index(a,b) + 19)}}')
+    - ssh $REMOTE_HOST "cd $SERVER_PATH/current && STELLA_HOST=ROOT php artisan stella:all:update-version --client=$CI_COMMIT_SHORT_SHA --message=\"$UPDATE_NOTE\""
+
+build-and-deploy-master:
+  stage: build
+  only:
+    - master
+  variables:
+    REMOTE_HOST: deployer@stella.one
+    DEPLOY_PATH: /var/www/stella.one/nuxt-client
+    SERVER_PATH: /var/www/stella.one/server
+  cache:
+    key: ${CI_COMMIT_REF_SLUG}
+    paths:
+      - node_modules/
+  script:
+    # install all dependencies to create a build
+    - yarn
+    # generate build
+    - mv nuxt.runtimeConfig.js.example nuxt.runtimeConfig.js
+    - yarn run build-prod
+    # create dist order and move all necessary files inside
+    - mkdir dist
+    - mv .nuxt dist/.nuxt
+    - mv static dist/static
+    - mv ecosystem.config.prod.js dist/ecosystem.config.js
+    - mv nuxt.config.ts dist/nuxt.config.ts
+    - mv package.json dist/package.json
+    - mv tsconfig.json dist/tsconfig.json
+    - mv yarn.lock dist/yarn.lock
+    # deploy to server and install packages on server. .nuxt folder should be copied explicit, as it is ignored by scp
+    - export DEPLOY_TIME=$(TZ="Europe/Berlin" date +%Y-%m-%d_%H-%M-%S)
+    - export RELEASE_PATH=$DEPLOY_PATH/releases/$DEPLOY_TIME
+    - ssh $REMOTE_HOST "mkdir -p $RELEASE_PATH"
+    - scp -r ./dist/* "$REMOTE_HOST:$RELEASE_PATH"
+    - scp -r ./dist/.nuxt "$REMOTE_HOST:$RELEASE_PATH"
+    - ssh $REMOTE_HOST "cd $RELEASE_PATH && ln -s ../../shared/nuxt.runtimeConfig.js nuxt.runtimeConfig.js"
+    - ssh $REMOTE_HOST "cd $RELEASE_PATH && yarn install --production=true"
+    # remove old releases
+    - ssh $REMOTE_HOST "cd $DEPLOY_PATH/releases && ls -t | sed -e '1,10d' | xargs -d '\n' rm -rf"
+    # replace current link
+    - ssh $REMOTE_HOST "cd $DEPLOY_PATH && ln -nfs releases/$DEPLOY_TIME current_tmp && mv -fT current_tmp current"
+    # restart server with pm2
+    - ssh $REMOTE_HOST "cd $DEPLOY_PATH && pm2 startOrReload current/ecosystem.config.js"
+    # notify clients about new version of frontend code
+    - export UPDATE_NOTE=$(awk -v a="$CI_COMMIT_MESSAGE" -v b="STELLA_UPDATE_NOTE" 'BEGIN{if (index(a,b) != 0) {print substr(a, index(a,b) + 19)}}')
+    - ssh $REMOTE_HOST "cd $SERVER_PATH/current && STELLA_HOST=ROOT php artisan stella:all:update-version --client=$CI_COMMIT_SHORT_SHA --message=\"$UPDATE_NOTE\""

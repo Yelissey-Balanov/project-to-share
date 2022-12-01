@@ -1,0 +1,7 @@
+#import "../../fragments/Revenue.gql"
+
+mutation CreateRevenue($input: CreateRevenueInput!) {
+  createRevenue(input: $input) {
+    ...Revenue
+  }
+}

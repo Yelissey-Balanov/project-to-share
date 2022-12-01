@@ -1,0 +1,5 @@
+mutation RestoreEmployee($id: ObfId!) {
+    restoreEmployee(id: $id, trashed: WITH) {
+        id
+    }
+}

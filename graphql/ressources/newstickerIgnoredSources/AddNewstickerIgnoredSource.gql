@@ -1,0 +1,5 @@
+mutation AddNewstickerIgnoredSource($name: String!) {
+  addNewstickerIgnoredSource(name: $name) {
+    id
+  }
+}

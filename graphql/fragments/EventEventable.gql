@@ -1,0 +1,48 @@
+#import "./ImageSizeFormat.gql"
+
+fragment EventEventable on Event {
+  eventable {
+    ... on Client {
+      id
+      person {
+        id
+        full_name
+        foto {
+          id
+          sizes {
+            PROFILE_IMAGE {
+              ...ImageSizeFormat
+            }
+          }
+        }
+      }
+    }
+    ... on Candidate {
+      id
+      person {
+        id
+        full_name
+        foto {
+          id
+          sizes {
+            PROFILE_IMAGE {
+              ...ImageSizeFormat
+            }
+          }
+        }
+      }
+    }
+    ... on Company {
+      id
+      aliasOrName
+      logo {
+        id
+        sizes {
+          PROFILE_IMAGE {
+            ...ImageSizeFormat
+          }
+        }
+      }
+    }
+  }
+}

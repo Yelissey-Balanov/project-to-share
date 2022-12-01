@@ -1,0 +1,6 @@
+mutation ConsentCandidateInProject($candidateId: ObfId!, $projectId: ObfId!, $timestamp: String!) {
+  consentCandidateInProject(candidateId: $candidateId, projectId: $projectId, timestamp: $timestamp) {
+    consented_at
+    contradicted_at
+  }
+}

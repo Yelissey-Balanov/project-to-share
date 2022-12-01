@@ -1,0 +1,11 @@
+mutation ChangeClientLongListAccess($projectId: ObfId!, $clientId: ObfId!, $newValue: Boolean!) {
+  updateProject(id: $projectId, input: {clients: {syncWithoutDetaching: [{id: $clientId, has_long_list_access: $newValue}]}}) {
+    id
+    clients {
+      id
+      client_project_pivot {
+        has_long_list_access
+      }
+    }
+  }
+}

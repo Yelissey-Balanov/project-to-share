@@ -1,0 +1,11 @@
+query GetLicense {
+  license {
+    id
+    client_name
+    host
+    is_active
+    plugins
+    users_limit
+    logo_url
+  }
+}

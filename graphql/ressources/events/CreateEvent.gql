@@ -1,0 +1,7 @@
+#import "../../fragments/EventWithUserAndProjectAndEventable.gql"
+
+mutation CreateEvent($input: CreateEventInput!) {
+  createEvent(input: $input) {
+    ...EventWithUserAndProjectAndEventable
+  }
+}

@@ -1,0 +1,13 @@
+#import "../../fragments/Paginator.gql"
+#import "../../fragments/GetClients.gql"
+
+query GetClients ($orderBy: [OrderByClause!], $first: Int!, $page: Int, $names: FirstAndLastname, $filter: ClientsFilter){
+  clients(orderBy: $orderBy, first: $first, page: $page, names: $names, filter: $filter) {
+    data {
+      ...GetClients
+    }
+    paginatorInfo {
+      ...Paginator
+    }
+  }
+}

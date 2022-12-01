@@ -1,0 +1,14 @@
+#import "../../fragments/Paginator.gql"
+
+query GetInstitutions ($orderBy: [OrderByClause!], $first: Int!, $page: Int, $name: String, $is_reviewed: Boolean){
+  institutions(orderBy: $orderBy, first: $first, page: $page, name: $name, is_reviewed: $is_reviewed) {
+    data {
+      id
+      name
+      is_reviewed
+    }
+    paginatorInfo {
+      ...Paginator
+    }
+  }
+}

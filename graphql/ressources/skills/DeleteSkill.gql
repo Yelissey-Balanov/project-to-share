@@ -1,0 +1,5 @@
+mutation DeleteSkill($id: ObfId!, $transferLinkedDataTo: ObfId) {
+    deleteSkill(id: $id, transferLinkedDataTo: $transferLinkedDataTo) {
+        id
+    }
+}

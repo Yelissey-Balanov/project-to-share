@@ -1,0 +1,126 @@
+#import "../../fragments/Document.gql"
+#import "../../fragments/EventWithUser.gql"
+#import "../../fragments/ImageSizeFormat.gql"
+
+query GetCandidatesOfProject($id: ObfId!) {
+  project(id: $id, trashed: WITH) {
+    id
+    candidates {
+      ...CandidateInProjectlist
+    }
+  }
+}
+
+fragment CandidateInProjectlist on Candidate {
+  id
+  person {
+    id
+    title
+    firstname
+    lastname
+    full_name
+    gender
+    birthdate
+    foto {
+      id
+      sizes {
+        PROFILE_IMAGE {
+          ...ImageSizeFormat
+        }
+      }
+    }
+  }
+  email
+  phonenumbers {
+    id
+    country_code
+    dial_code
+    number
+    label
+  }
+  nationalities {
+    id
+    name
+  }
+  is_interim
+  is_permanent
+  desired_job
+  available_from
+  daily_rate
+  has_hourly_rate
+  expenses_included
+  period_of_notice
+  next_possible_notice_to
+  basic_salary
+  bonus_eur
+  is_business_car_included
+  other_bonus
+  is_research
+  location {
+    id
+    full_address
+    postal_code
+    city
+    country
+  }
+  industries {
+    id
+    title
+  }
+  skills {
+    id
+    title
+  }
+  certifications {
+    id
+    title
+  }
+  it_skills {
+    id
+    title
+  }
+  cv_documents {
+    ...Document
+  }
+  candidate_project_pivot {
+    status
+    is_shortlisted
+    purchasing_daily_rate
+    retail_daily_rate
+    basic_salary
+    bonus_eur
+    client_notes
+    liked_by_client
+    consent_sent_at
+    consent_sent_to_email
+    consented_at
+    contradicted_at
+  }
+  events_in_project(projectId: $id) {
+    ...EventWithUser
+  }
+  caution
+  was_placed
+  deleted_at
+  worked_at_companies {
+    id
+    from
+    job_title
+    job_level
+#    main_responsibilities
+    till
+    company {
+      id
+      aliasOrName
+      logo {
+        id
+        sizes {
+          PROFILE_IMAGE {
+            ...ImageSizeFormat
+          }
+        }
+      }
+      deleted_at
+    }
+  }
+}

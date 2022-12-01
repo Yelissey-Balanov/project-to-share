@@ -1,0 +1,7 @@
+mutation CreateSkill($input: CreateSkillInput!) {
+  createSkill(input: $input) {
+    id
+    title
+    is_reviewed
+  }
+}

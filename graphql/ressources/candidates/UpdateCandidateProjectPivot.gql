@@ -1,0 +1,11 @@
+mutation UpdateCandidateProjectPivot($candidateId: ObfId!, $projectId: ObfId!, $pivot: CandidateProjectPivotInput) {
+  updateCandidateProjectPivot(candidateId: $candidateId, projectId: $projectId, pivot: $pivot) {
+    id
+    candidate_project_pivot {
+      purchasing_daily_rate
+      retail_daily_rate
+      basic_salary
+      bonus_eur
+    }
+  }
+}

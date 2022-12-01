@@ -1,0 +1,7 @@
+#import "../../fragments/WorkingHours.gql"
+
+mutation DeclineWorkingHours($id: ObfId!, $status_note: String) {
+  declineWorkingHours(id: $id, status_note: $status_note) {
+    ...WorkingHours
+  }
+}

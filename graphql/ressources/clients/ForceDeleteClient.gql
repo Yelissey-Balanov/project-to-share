@@ -1,0 +1,5 @@
+mutation ForceDeleteClient($id: ObfId!) {
+    forceDeleteClient(id: $id, trashed: WITH) {
+        id
+    }
+}

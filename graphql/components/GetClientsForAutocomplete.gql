@@ -1,0 +1,11 @@
+query GetClientsForAutocomplete($companyId: ObfId!){
+  clientsInCompany(company_id: $companyId) {
+    id
+    person {
+      id
+      title
+      firstname
+      lastname
+    }
+  }
+}

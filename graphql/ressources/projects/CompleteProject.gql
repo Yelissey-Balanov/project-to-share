@@ -1,0 +1,7 @@
+mutation CompleteProject($id: ObfId!, $note: String) {
+    completeProject(id: $id, note: $note) {
+      id
+      status
+      status_note
+    }
+}

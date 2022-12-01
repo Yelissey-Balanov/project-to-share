@@ -1,0 +1,28 @@
+#import "../../fragments/EventWithUser.gql"
+#import "../../fragments/ProjectDataForClientViews.gql"
+#import "../../fragments/CandidateInProjectForClient.gql"
+#import "../../fragments/PlacedCandidate.gql"
+
+query GetProjectForClient($projectId: ObfId!) {
+  project(id: $projectId, trashed: WITH) {
+    ...ProjectDataForClientViews
+    shortlisted_candidates {
+      ...CandidateInProjectForClient
+      events_in_project: events_in_project_for_client(projectId: $projectId) {
+        ...EventWithUser
+      }
+    }
+    candidates {
+      ...CandidateInProjectForClient
+      events_in_project: events_in_project_for_client(projectId: $projectId) {
+        ...EventWithUser
+      }
+    }
+    placed_candidate {
+      ...PlacedCandidate
+      events_in_project: events_in_project_for_client(projectId: $projectId) {
+        ...EventWithUser
+      }
+    }
+  }
+}

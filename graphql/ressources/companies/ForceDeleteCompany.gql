@@ -1,0 +1,5 @@
+mutation ForceDeleteCompany($id: ObfId!) {
+    forceDeleteCompany(id: $id, trashed: WITH) {
+        id
+    }
+}

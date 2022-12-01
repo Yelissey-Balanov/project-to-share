@@ -1,0 +1,5 @@
+mutation UpdateCompany($id: ObfId!, $input: UpdateCompanyInput!) {
+  updateCompany(id: $id, input: $input) {
+    id
+  }
+}

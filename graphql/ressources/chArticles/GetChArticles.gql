@@ -1,0 +1,8 @@
+query GetChArticles ($orderBy: [QueryChArticlesOrderByOrderByClause!]){
+  chArticles(orderBy: $orderBy) {
+    id
+    title
+    category
+    author
+  }
+}

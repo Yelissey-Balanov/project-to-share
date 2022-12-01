@@ -1,0 +1,5 @@
+mutation CopyBucket($id: ObfId!) {
+    copyBucket(id: $id) {
+      id
+    }
+}

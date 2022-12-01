@@ -1,0 +1,5 @@
+mutation DeleteEvent($id: ObfId!) {
+    deleteEvent(id: $id) {
+        id
+    }
+}

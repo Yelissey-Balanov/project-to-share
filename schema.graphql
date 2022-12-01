@@ -1,0 +1,3245 @@
+input AddToBucketInput {
+  candidate_ids: [ObfId!]
+  client_ids: [ObfId!]
+  company_ids: [ObfId!]
+  project_ids: [ObfId!]
+  notes: String
+}
+
+scalar BigInt
+
+enum BillingType {
+  """Hourly"""
+  HOURLY
+
+  """Daily"""
+  DAILY
+}
+
+type Bucket {
+  id: ObfId!
+  title: String!
+  notes: String
+  owner_id: ObfId!
+  created_at: DateTime!
+  updated_at: DateTime!
+  owner: User!
+  shared_with: [User!]!
+  candidates: [Candidate!]!
+  clients: [Client!]!
+  companies: [Company!]!
+  projects: [Project!]!
+  histories: [History!]!
+  bucket_user_permission: BucketUserPermission
+}
+
+input BucketableSyncInput {
+  bucketable_id: ObfId!
+  notes: String
+}
+
+type BucketMorphItemPivot {
+  notes: String
+}
+
+input BucketPermissionSyncInput {
+  user_id: ObfId!
+  is_write_allowed: Boolean
+}
+
+type BucketUserPermission {
+  bucket_id: ObfId
+  user_id: ObfId
+  is_write_allowed: Boolean!
+}
+
+type Candidate {
+  id: ObfId!
+  email: String
+  is_blacklisted: Boolean
+  blacklisting_reason: String
+  is_interim: Boolean!
+  is_permanent: Boolean!
+  marital_status: String
+  skype_name: String
+  desired_job: String
+  max_distance_from_home: String
+  willing_to_travel: Int
+  available_from: Date
+  daily_rate: Float
+  expenses_included: Boolean
+  period_of_notice: JSON
+  next_possible_notice_to: Date
+  basic_salary: Float
+  bonus_eur: Float
+  is_business_car_included: Boolean
+  other_bonus: String
+  notes: String
+  linked_in_profile: String
+  xing_profile: String
+  url: String
+  was_placed: Boolean
+  caution: Boolean
+  is_research: Boolean
+  create_account_token: String
+  has_hourly_rate: Boolean!
+  zoom_id: String
+  created_at: DateTime!
+  updated_at: DateTime!
+  deleted_at: DateTime
+  user_id: ObfId
+  match_score: Int
+  industries_count: Int
+  skills_count: Int
+  user: User
+  person: Person!
+  location: Location
+  phonenumbers: [Phonenumber!]!
+  histories: [History!]!
+  industries: [Industry!]!
+  skills: [Skill!]!
+  certifications: [Certification!]!
+  it_skills: [ItSkill!]!
+  is_in_project(project_id: ObfId!): Boolean!
+  projects: [Project!]!
+  documents: [Document!]!
+  languages: [Language!]!
+  nationalities: [Nationality!]!
+  events: [Event!]!
+  events_in_project(projectId: ObfId!): [Event!]!
+  events_in_shared_project_for_client(token: String!): [Event!]!
+  events_in_project_for_client(projectId: ObfId!): [Event!]!
+  cv_documents: [Document!]!
+  ch_categories: [ChCategory!]!
+  worked_at_companies: [CandidateCompany!]!
+  educations: [Education!]!
+  working_hours(project_id: ObfId): [WorkingHours!]!
+  candidate_project_pivot: CandidateProjectPivot
+  bucket_candidate_pivot: BucketMorphItemPivot
+  candidate_ch_category_pivot: CandidateChCategoryPivot
+  placed_projects(
+    """Limits number of fetched items. Maximum allowed value: 100."""
+    first: Int = 20
+
+    """The offset from which items are returned."""
+    page: Int
+  ): ProjectPaginator
+}
+
+type CandidateAndEvent {
+  candidate: Candidate!
+  event: Event!
+}
+
+type CandidateChCategoryPivot {
+  ch_category_id: ObfId!
+  candidate_id: ObfId!
+  text: String
+  phonenumber: String
+  email: String
+  work_time: WorkTime
+  work_place: WorkPlace
+  created_at: DateTime!
+}
+
+input CandidateChCategoryRelationInput {
+  id: ObfId!
+  text: String
+  phonenumber: String
+  email: String
+  work_time: WorkTime
+  work_place: WorkPlace
+}
+
+type CandidateCompany {
+  id: ObfId
+  candidate_id: ObfId
+  company_id: ObfId
+  from: Date
+  till: Date
+  job_title: String
+  job_level: JobLevel
+  main_responsibilities: [String!]
+  company: Company
+  candidate: Candidate
+}
+
+input CandidateCompanyRelationInput {
+  id: ObfId
+  company_id: ObfId!
+  from: Date
+  till: Date
+  job_title: String
+  job_level: JobLevel
+  main_responsibilities: [String!]
+}
+
+"""A paginated list of Candidate items."""
+type CandidatePaginator {
+  """Pagination information about the list of items."""
+  paginatorInfo: PaginatorInfo!
+
+  """A list of Candidate items."""
+  data: [Candidate!]!
+}
+
+type CandidateProjectPivot {
+  project_id: ObfId
+  candidate_id: ObfId
+  status: CandidateStatusInProject!
+  is_shortlisted: Boolean!
+  purchasing_daily_rate: Float
+  retail_daily_rate: Float
+  basic_salary: Float
+  bonus_eur: Float
+  client_notes: String
+  liked_by_client: Boolean
+  consented_at: DateTime
+  contradicted_at: DateTime
+  consent_sent_to_email: String
+  consent_sent_at: DateTime
+  project: Project!
+  candidate: Candidate!
+}
+
+input CandidateProjectPivotInput {
+  purchasing_daily_rate: Float
+  retail_daily_rate: Float
+  basic_salary: Float
+  bonus_eur: Float
+}
+
+input CandidatesFilter {
+  is_interim: Boolean
+  available_from: Date
+  daily_rate_max: Float
+  is_permanent: Boolean
+  salary_package_max: Float
+  industries: [ObfId!]
+  certifications: [ObfId!]
+  it_skills: [ObfId!]
+  skills: [ObfId!]
+  keywords_search: [String!]
+  location: CreateLocationInput
+  location_radius: Int
+  language_codes: [String!]
+  job_levels: [JobLevel!]
+}
+
+enum CandidateStatusInProject {
+  """Longlisted"""
+  LONGLISTED
+
+  """Shortlisted"""
+  SHORTLISTED
+
+  """On hold"""
+  ON_HOLD
+
+  """Rejected by client"""
+  REJECTED_BY_CLIENT
+
+  """Rejected by candidate"""
+  REJECTED_BY_CANDIDATE
+
+  """Rejected by blackbull"""
+  REJECTED_BY_BLACKBULL
+
+  """Client interview"""
+  CLIENT_INTERVIEW
+
+  """Second client interview"""
+  SECOND_CLIENT_INTERVIEW
+
+  """Additional client interview"""
+  ADDITIONAL_CLIENT_INTERVIEW
+
+  """Final client interview"""
+  FINAL_CLIENT_INTERVIEW
+
+  """Under offer"""
+  UNDER_OFFER
+
+  """Placed"""
+  PLACED
+}
+
+type Certification {
+  id: ObfId!
+  title: String!
+  is_reviewed: Boolean!
+  parent_id: ObfId
+  synonym_representative_id: ObfId
+  created_at: DateTime!
+  updated_at: DateTime!
+  synonyms: [Certification!]!
+  synonym_representative: Certification
+  parent: Certification
+  children: [Certification!]!
+}
+
+"""A paginated list of Certification items."""
+type CertificationPaginator {
+  """Pagination information about the list of items."""
+  paginatorInfo: PaginatorInfo!
+
+  """A list of Certification items."""
+  data: [Certification!]!
+}
+
+type ChArticle {
+  id: ObfId!
+  title: String!
+  image_copyright: String
+  slug: String!
+  content: String!
+  author: String!
+  author_position: String
+  author_company: String
+  category: String
+  read_time: Int
+  created_at: DateTime!
+  updated_at: DateTime!
+  image: Image
+  author_image: Image
+  other_articles_in_category: [ChArticle!]!
+  other_articles_without_category: [ChArticle!]!
+}
+
+type ChCategory {
+  id: ObfId!
+  title: String!
+  slug: String!
+  short_text: String!
+  long_text: String!
+  created_at: DateTime!
+  updated_at: DateTime!
+  candidates: [Candidate!]!
+  candidate_ch_category_pivot: CandidateChCategoryPivot
+}
+
+type ChPodcast {
+  id: ObfId!
+  title: String!
+  slug: String!
+  description: String!
+  rss_title: String!
+  rss_description: String!
+  duration: Int!
+  category: String
+  public_url: String
+  created_at: DateTime!
+  updated_at: DateTime!
+  image: Image
+  other_podcasts: [ChPodcast!]!
+}
+
+type Client {
+  id: ObfId!
+  email: String
+  position: String
+  created_at: DateTime!
+  updated_at: DateTime!
+  deleted_at: DateTime
+  need_review_after_autocomplete: Boolean!
+  notes: String
+  is_research: Boolean!
+  create_account_token: String
+  zoom_id: String
+  user_id: ObfId
+  user: User
+  person: Person!
+  company: Company
+  location: Location
+  phonenumbers: [Phonenumber!]!
+  histories: [History!]!
+  events: [Event!]!
+  bucket_client_pivot: BucketMorphItemPivot
+  client_project_pivot: ClientProjectPivot
+  projects(
+    """Limits number of fetched items. Maximum allowed value: 100."""
+    first: Int = 20
+
+    """The offset from which items are returned."""
+    page: Int
+  ): ProjectPaginator
+  active_projects(
+    """Limits number of fetched items. Maximum allowed value: 100."""
+    first: Int = 20
+
+    """The offset from which items are returned."""
+    page: Int
+  ): ProjectPaginator
+  runner_projects(
+    """Limits number of fetched items. Maximum allowed value: 100."""
+    first: Int = 20
+
+    """The offset from which items are returned."""
+    page: Int
+  ): ProjectPaginator
+}
+
+"""A paginated list of Client items."""
+type ClientPaginator {
+  """Pagination information about the list of items."""
+  paginatorInfo: PaginatorInfo!
+
+  """A list of Client items."""
+  data: [Client!]!
+}
+
+type ClientProjectPivot {
+  project_id: ObfId
+  client_id: ObfId
+  has_long_list_access: Boolean!
+  project: Project!
+  client: Client!
+}
+
+input ClientRelationInput {
+  id: ObfId!
+  has_long_list_access: Boolean
+}
+
+input ClientsFilter {
+  industries: [ObfId!]
+  location: CreateLocationInput
+  location_radius: Int
+}
+
+input CompaniesFilter {
+  industries: [ObfId!]
+  location: CreateLocationInput
+  location_radius: Int
+  min_employees_count: Int
+  max_employees_count: Int
+  min_annual_sales: Float
+  max_annual_sales: Float
+}
+
+type Company {
+  id: ObfId!
+  name: String!
+  legal_form: String
+  alias: String
+  website: String
+  email: String
+  employees_count: String
+  annual_sales: Float
+  about: String
+  created_at: DateTime!
+  updated_at: DateTime!
+  deleted_at: DateTime
+  need_review_after_autocomplete: Boolean!
+  jobs_external_link: String
+  invoice_notes: String
+  aliasOrName: String!
+  complete_name: String!
+  industries: [Industry!]!
+  locations: [Location!]!
+  phonenumbers: [Phonenumber!]!
+  logo: Image
+  child_companies: [Company!]!
+  parent_company: Company
+  clients: [Client!]!
+  histories: [History!]!
+  candidates: [Candidate!]
+  candidatesCount: Int
+  projects: [Project!]!
+  documents: [Document!]!
+  events: [Event!]!
+  eventsInclClients: [Event!]!
+  pivot: CandidateCompany
+  bucket_company_pivot: BucketMorphItemPivot
+}
+
+"""A paginated list of Company items."""
+type CompanyPaginator {
+  """Pagination information about the list of items."""
+  paginatorInfo: PaginatorInfo!
+
+  """A list of Company items."""
+  data: [Company!]!
+}
+
+input CreateBucketInput {
+  title: String!
+  notes: String
+  owner_id: ObfId!
+  shared_with: UpdateBucketPermissionsRelation
+}
+
+input CreateCandidateInput {
+  email: String
+  is_blacklisted: Boolean
+  blacklisting_reason: String
+  is_interim: Boolean!
+  is_permanent: Boolean!
+  marital_status: String
+  skype_name: String
+  desired_job: String
+  max_distance_from_home: String
+  willing_to_travel: Int
+  available_from: Date
+  daily_rate: Float
+  expenses_included: Boolean
+  period_of_notice: JSON
+  basic_salary: Float
+  bonus_eur: Float
+  is_business_car_included: Boolean
+  other_bonus: String
+  notes: String
+  linked_in_profile: String
+  xing_profile: String
+  url: String
+  is_research: Boolean
+  has_hourly_rate: Boolean
+  zoom_id: String
+  person: DefinePersonRelation
+  location: CreateLocationRelation
+  phonenumbers: CreatePhonenumberRelation
+  industries: DefineIndustryRelation
+  skills: DefineSkillRelation
+  certifications: DefineCertificationRelation
+  it_skills: DefineItSkillRelation
+  languages: DefineLanguageRelation
+  nationalities: DefineNationalityRelation
+  educations: UpdateEducationRelation
+}
+
+input CreateCertificationInput {
+  title: String!
+  synonym_representative_id: ObfId
+  parent_id: ObfId
+  children_ids: [ObfId!]
+  is_reviewed: Boolean
+}
+
+input CreateChArticleInput {
+  title: String!
+  image_copyright: String
+  content: String!
+  category: String!
+  author: String!
+  author_position: String
+  author_company: String
+  image: CroppedImageUpload
+  author_image: CroppedImageUpload
+}
+
+input CreateChCategoryInput {
+  title: String!
+  short_text: String!
+  long_text: String!
+  candidates: UpdateCandidateChCategoryRelation
+}
+
+input CreateChPodcastInput {
+  title: String!
+  description: String!
+  rss_title: String!
+  rss_description: String!
+  duration: Int!
+  category: String
+  image: CroppedImageUpload
+}
+
+input CreateClientInput {
+  email: String
+  position: String
+  company_id: ObfId
+  location_id: ObfId
+  need_review_after_autocomplete: Boolean
+  notes: String
+  is_research: Boolean
+  zoom_id: String
+  person: DefinePersonRelation
+  phonenumbers: CreatePhonenumberRelation
+}
+
+input CreateCompanyInput {
+  name: String!
+  legal_form: String
+  alias: String
+  website: String
+  email: String
+  employees_count: String
+  annual_sales: Float
+  about: String
+  need_review_after_autocomplete: Boolean
+  jobs_external_link: String
+  invoice_notes: String
+  industries: DefineIndustryRelation
+  locations: CreateLocationsRelation
+  phonenumbers: CreatePhonenumberRelation
+  logo: CroppedImageUpload
+}
+
+input CreateDocumentInput {
+  title: String!
+  file: Upload!
+  tags: DefineDocumentTagRelation
+}
+
+input CreateDocumentTagInput {
+  title: String!
+}
+
+input CreateEmployeeInput {
+  user_id: ObfId
+  personalnummer: String
+  betr_personalnummer: String
+  familienname: String!
+  geburtsname: String
+  vorname: String!
+  geburtsdatum: Date
+  geschlecht: Gender!
+  versicherungsnummer: String
+  geburtsort: String
+  familienstand: String
+  schwerbehindert: Boolean
+  iban: String!
+  bic: String!
+  eintrittsdatum: Date!
+  ersteintrittsdatum: Date!
+  betriebsstaette: String!
+  berufsbezeichnung: String!
+  ausgeuebte_taetigkeit: String!
+  beschaeftigungsart: EmployeeBeschaeftigungsart!
+  probezeit: Boolean!
+  probezeit_dauer: String
+  weitere_beschaeftigungen: Boolean!
+  ist_weitere_beschaeftigung_geringfuegig: Boolean!
+  hoechster_schullabschluss: EmployeeSchulabschluss!
+  hoechste_berufsausbildung: EmployeeBerufsausbildung!
+  beginn_der_ausbildung: Date
+  voraussichtliches_ende_der_ausbildung: Date
+  im_baugewerbe_seit: Date
+  woechentliche_arbeitszeit: EmployeeWoechentlicheArbeitszeit!
+  verteilung_der_woechentlichen_arbeitszeit: JSON
+  urlaubsanspruch: Int!
+  ist_befristet: Boolean!
+  ist_zweckbefristet: Boolean!
+  befristung_arbeitsvertrag_zum: Date
+  schrieftlicher_abschluss_des_befristeten_arbeitsvertrages: Boolean!
+  abschluss_arbeitsvertrag_am: Date
+  befristet_mit_aussicht: Boolean!
+  ich_wiederspreche_bea_an_bafa: Boolean!
+  identifikationsnummer: String!
+  finanzamt_nummer: String!
+  steuerklasse_faktor: String!
+  kinderfreibetraege: String
+  konfession: String
+  gesetzliche_krankenkasse: String!
+  elterneigenschaft: Boolean!
+  entl_bezeichnung: String
+  entl_betrag: Float
+  entl_gueltig_ab: Date
+  stundenlohn: Float
+  stundenlohn_gueltig_ab: Date
+  vwl_empfaenger: String
+  vwl_betrag: Float
+  vwl_ag_anteil: Float
+  vwl_seit_wann: Date
+  vwl_vertragsnummer: String
+  vwl_iban: String
+  vwl_bic: String
+  steuerpflichtige_vorbeschaeftigung_im_laufenden_kalenderjahr: JSON
+  location: CreateLocationRelation
+  staatsangehoerigkeit: DefineNationalityRelation
+}
+
+input CreateEventInput {
+  eventable_type: String!
+  eventable_id: ObfId!
+  project_id: ObfId
+  user_id: ObfId!
+  group: EventGroup!
+  type: EventType!
+  notes: String
+  happened_at: DateTime!
+}
+
+input CreateIndustryInput {
+  title: String!
+  synonym_representative_id: ObfId
+  parent_id: ObfId
+  children_ids: [ObfId!]
+  is_reviewed: Boolean
+}
+
+input CreateInstitutionInput {
+  name: String!
+  is_reviewed: Boolean
+}
+
+input CreateItSkillInput {
+  title: String!
+  synonym_representative_id: ObfId
+  parent_id: ObfId
+  children_ids: [ObfId!]
+  is_reviewed: Boolean
+}
+
+input CreateLocationInput {
+  postal_code: String
+  city: String
+  street: String
+  house_number: String
+  country: String
+  label: String
+  full_address: String
+  lat: Float
+  long: Float
+}
+
+input CreateLocationRelation {
+  create: CreateLocationInput
+}
+
+input CreateLocationsRelation {
+  create: [CreateLocationInput!]
+}
+
+input CreatePhonenumberInput {
+  country_code: String!
+  dial_code: String!
+  number: String!
+  label: String
+}
+
+input CreatePhonenumberRelation {
+  create: [CreatePhonenumberInput!]
+}
+
+input CreateProjectInput {
+  is_interim: Boolean!
+  is_permanent: Boolean!
+  title: String!
+  max_basic_salary: Float
+  max_bonus_eur: Float
+  is_business_car_included: Boolean
+  fee_structure: Int
+  max_daily_rate: Float
+  expenses_included: Boolean
+  retain: Float
+  project_start: Date!
+  project_end: Date
+  notes: String
+  ir_name: String
+  ir_email: String
+  ir_phone: String
+  ir_vat: String
+  ir_po: String
+  ir_address: String
+  company_id: ObfId
+  clients: DefineClientRelation
+  industries: DefineIndustryRelation
+  skills: DefineSkillRelation
+  certifications: DefineCertificationRelation
+  it_skills: DefineItSkillRelation
+  languages: DefineLanguageRelation
+  users: UpdateProjectUserRelation
+  documents: UpdateDocumentsRelationInput
+}
+
+input CreateRevenueInput {
+  year: Int!
+  month: Int!
+  amount: BigInt!
+  type: RevenueType!
+  stage: RevenueStage!
+  project_id: ObfId!
+  users: UpdateRevenueUserRelation
+}
+
+input CreateSkillInput {
+  title: String!
+  synonym_representative_id: ObfId
+  parent_id: ObfId
+  children_ids: [ObfId!]
+  is_reviewed: Boolean
+}
+
+input CreateWorkingHoursInput {
+  project_id: ObfId!
+  candidate_id: ObfId!
+  units: [WorkingHoursUnitInput!]!
+}
+
+input CroppedImageUpload {
+  file: Upload
+  cropProps: CropPropsInput!
+  sizeName: String!
+}
+
+type CropProps {
+  top: Int!
+  left: Int!
+  width: Int!
+  height: Int!
+}
+
+input CropPropsInput {
+  top: Int
+  left: Int
+  width: Int
+  height: Int
+}
+
+"""A date string with format `Y-m-d`, e.g. `2011-05-23`."""
+scalar Date
+
+"""
+A date string with format `Y-m-d`, e.g. `2011-05-23`, timezone from request will be used
+"""
+scalar DateRequestTz
+
+"""A datetime string with format in ISO8601 `YYYY-MM-DDTHH:mm:ss.sssZ`"""
+scalar DateTime
+
+input DefineCertificationRelation {
+  sync: [ObfId!]!
+}
+
+input DefineClientRelation {
+  sync: [ClientRelationInput!]
+  syncWithoutDetaching: [ClientRelationInput!]
+}
+
+input DefineDocumentTagRelation {
+  sync: [ObfId!]!
+}
+
+input DefineIndustryRelation {
+  sync: [ObfId!]!
+}
+
+input DefineItSkillRelation {
+  sync: [ObfId!]!
+}
+
+input DefineLanguageRelation {
+  sync: [LanguageRelationInput!]!
+}
+
+input DefineNationalityRelation {
+  sync: [NationalityRelationInput!]!
+}
+
+input DefinePersonRelation {
+  upsert: UpsertPersonInput
+}
+
+input DefineSkillRelation {
+  sync: [ObfId!]!
+}
+
+type Document {
+  id: ObfId!
+  title: String!
+  mime_type: String!
+  parsing_status: DocumentParsingStatus
+  parsed_content: String
+  parsing_failure_reason: String
+  preview_path: String
+  created_at: DateTime!
+  updated_at: DateTime!
+  tags: [DocumentTag!]!
+}
+
+enum DocumentParsingStatus {
+  """Not needed"""
+  NOT_NEEDED
+
+  """Queued"""
+  QUEUED
+
+  """Processing"""
+  PROCESSING
+
+  """Succeeded"""
+  SUCCEEDED
+
+  """Failed"""
+  FAILED
+
+  """Unknown format"""
+  UNKNOWN_FORMAT
+}
+
+type DocumentTag {
+  id: ObfId!
+  title: String!
+  created_at: DateTime!
+  updated_at: DateTime!
+  documents: [Document!]!
+}
+
+type Education {
+  id: ObfId
+  institution_id: ObfId
+  candidate_id: ObfId
+  from: Date
+  till: Date
+  main_field_of_study: String
+  additional_fields_of_study: [String!]!
+  degree: String
+  final_grade: String
+  notes: String
+  institution: Institution
+  candidate: Candidate
+}
+
+input EducationRelationInput {
+  id: ObfId
+  institution_id: ObfId!
+  from: Date
+  till: Date
+  main_field_of_study: String
+  additional_fields_of_study: [String!]
+  degree: String
+  final_grade: String
+  notes: String
+}
+
+type Employee {
+  id: ObfId!
+  user_id: ObfId
+  personalnummer: String
+  betr_personalnummer: String
+  familienname: String!
+  geburtsname: String
+  vorname: String!
+  geburtsdatum: Date
+  geschlecht: Gender!
+  versicherungsnummer: String
+  geburtsort: String
+  familienstand: String
+  schwerbehindert: Boolean
+  iban: String!
+  bic: String!
+  eintrittsdatum: Date!
+  ersteintrittsdatum: Date!
+  betriebsstaette: String!
+  berufsbezeichnung: String!
+  ausgeuebte_taetigkeit: String!
+  beschaeftigungsart: EmployeeBeschaeftigungsart!
+  probezeit: Boolean!
+  probezeit_dauer: String
+  weitere_beschaeftigungen: Boolean!
+  ist_weitere_beschaeftigung_geringfuegig: Boolean!
+  hoechster_schullabschluss: EmployeeSchulabschluss!
+  hoechste_berufsausbildung: EmployeeBerufsausbildung!
+  beginn_der_ausbildung: Date
+  voraussichtliches_ende_der_ausbildung: Date
+  im_baugewerbe_seit: Date
+  woechentliche_arbeitszeit: EmployeeWoechentlicheArbeitszeit!
+  verteilung_der_woechentlichen_arbeitszeit: JSON
+  urlaubsanspruch: Int!
+  ist_befristet: Boolean!
+  ist_zweckbefristet: Boolean!
+  befristung_arbeitsvertrag_zum: Date
+  schrieftlicher_abschluss_des_befristeten_arbeitsvertrages: Boolean!
+  abschluss_arbeitsvertrag_am: Date
+  befristet_mit_aussicht: Boolean!
+  ich_wiederspreche_bea_an_bafa: Boolean!
+  identifikationsnummer: String!
+  finanzamt_nummer: String!
+  steuerklasse_faktor: String!
+  kinderfreibetraege: String
+  konfession: String
+  gesetzliche_krankenkasse: String!
+  elterneigenschaft: Boolean!
+  entl_bezeichnung: String
+  entl_betrag: Float
+  entl_gueltig_ab: Date
+  stundenlohn: Float
+  stundenlohn_gueltig_ab: Date
+  vwl_empfaenger: String
+  vwl_betrag: Float
+  vwl_ag_anteil: Float
+  vwl_seit_wann: Date
+  vwl_vertragsnummer: String
+  vwl_iban: String
+  vwl_bic: String
+  steuerpflichtige_vorbeschaeftigung_im_laufenden_kalenderjahr: JSON
+  created_at: DateTime!
+  updated_at: DateTime!
+  deleted_at: DateTime
+  user: User
+  location: Location
+  vacations: [Vacation!]!
+  vacation_capacities: [VacationCapacity!]!
+  sicknesses: [Sickness!]!
+  histories: [History!]!
+  documents: [Document!]!
+  staatsangehoerigkeit: [Nationality!]!
+}
+
+enum EmployeeBerufsausbildung {
+  """Ohne"""
+  OHNE
+
+  """Anerkannte"""
+  ANERKANNTE
+
+  """Meister technicker"""
+  MEISTER_TECHNICKER
+
+  """Bachelor"""
+  BACHELOR
+
+  """Diplom magister master staatsexamem"""
+  DIPLOM_MAGISTER_MASTER_STAATSEXAMEM
+
+  """Promotion"""
+  PROMOTION
+}
+
+enum EmployeeBeschaeftigungsart {
+  """Hauptbeschaeftigung"""
+  HAUPTBESCHAEFTIGUNG
+
+  """Nebenbeschaeftigung"""
+  NEBENBESCHAEFTIGUNG
+}
+
+"""A paginated list of Employee items."""
+type EmployeePaginator {
+  """Pagination information about the list of items."""
+  paginatorInfo: PaginatorInfo!
+
+  """A list of Employee items."""
+  data: [Employee!]!
+}
+
+enum EmployeeSchulabschluss {
+  """Ohne"""
+  OHNE
+
+  """Haupt volks"""
+  HAUPT_VOLKS
+
+  """Mittlere reife"""
+  MITTLERE_REIFE
+
+  """Abitur"""
+  ABITUR
+}
+
+enum EmployeeWoechentlicheArbeitszeit {
+  """Vollzeit"""
+  VOLLZEIT
+
+  """Teilzeit"""
+  TEILZEIT
+}
+
+type Event {
+  id: ObfId!
+  group: EventGroup!
+  type: EventType
+  notes: String
+  happened_at: DateTime!
+  created_at: DateTime!
+  updated_at: DateTime!
+  eventable: Eventable
+  project: Project
+  user: User
+}
+
+union Eventable = Client | Candidate | Company
+
+enum EventGroup {
+  """Contact"""
+  CONTACT
+
+  """Meeting"""
+  MEETING
+
+  """Interview"""
+  INTERVIEW
+
+  """Offer"""
+  OFFER
+
+  """Client interview"""
+  CLIENT_INTERVIEW
+
+  """Like"""
+  LIKE
+
+  """Unlike"""
+  UNLIKE
+
+  """Reject"""
+  REJECT
+
+  """On hold"""
+  ON_HOLD
+
+  """Reactivated"""
+  REACTIVATED
+}
+
+enum EventType {
+  """Telephone"""
+  Telephone
+
+  """Email"""
+  Email
+
+  """Linked in"""
+  LinkedIn
+
+  """Xing"""
+  XING
+
+  """Video call"""
+  Video_call
+
+  """Whats app"""
+  WhatsApp
+
+  """Sms"""
+  SMS
+
+  """Office  ffm"""
+  Office_Ffm
+
+  """Office  client"""
+  Office_Client
+
+  """Lunch"""
+  Lunch
+
+  """Dinner"""
+  Dinner
+
+  """Virtual"""
+  Virtual
+
+  """F2f"""
+  F2F
+
+  """First interview"""
+  First_interview
+
+  """Second interview"""
+  Second_interview
+
+  """Additional interview"""
+  Additional_interview
+
+  """Assessment center"""
+  Assessment_center
+
+  """Final interview"""
+  Final_interview
+
+  """Under offer"""
+  Under_offer
+
+  """Accepted"""
+  Accepted
+
+  """Rejected"""
+  Rejected
+
+  """By client"""
+  By_client
+
+  """By candidate"""
+  By_candidate
+
+  """By  blackbull"""
+  By_Blackbull
+}
+
+input FirstAndLastname {
+  firstname: String
+  lastname: String
+}
+
+enum Gender {
+  """Male"""
+  Male
+
+  """Female"""
+  Female
+
+  """Diverse"""
+  Diverse
+}
+
+type History {
+  id: ID!
+  historiable_type: String!
+  user: User
+  action: HistoryAction!
+  changes: JSON
+  changed_model: String
+  created_at: DateTime!
+  updated_at: DateTime!
+}
+
+enum HistoryAction {
+  """Created"""
+  CREATED
+
+  """Updated"""
+  UPDATED
+
+  """Deleted"""
+  DELETED
+
+  """Restored"""
+  RESTORED
+
+  """Force deleted"""
+  FORCE_DELETED
+
+  """Attached"""
+  ATTACHED
+
+  """Detached"""
+  DETACHED
+}
+
+type Image {
+  id: ObfId!
+  original_image: String!
+  sizes: ImageSizes!
+  created_at: DateTime!
+  updated_at: DateTime!
+}
+
+type ImageSizeFormat {
+  regular: String!
+  retina: String!
+  thumbnail: String!
+  cropProps: CropProps
+}
+
+type ImageSizes {
+  PROFILE_IMAGE: ImageSizeFormat
+  CH_ARTICLE_AUTHOR: ImageSizeFormat
+  CH_PODCAST_THUMB: ImageSizeFormat
+  CH_PODCAST_FULL: ImageSizeFormat
+  CH_ARTICLE_THUMB: ImageSizeFormat
+  CH_ARTICLE_FULL: ImageSizeFormat
+  CH_ARTICLE_IMAGE_INSIDE: ImageSizeFormat
+}
+
+type Industry {
+  id: ObfId!
+  title: String!
+  is_reviewed: Boolean!
+  parent_id: ObfId
+  synonym_representative_id: ObfId
+  created_at: DateTime!
+  updated_at: DateTime!
+  synonyms: [Industry!]!
+  synonym_representative: Industry
+  parent: Industry
+  children: [Industry!]!
+}
+
+"""A paginated list of Industry items."""
+type IndustryPaginator {
+  """Pagination information about the list of items."""
+  paginatorInfo: PaginatorInfo!
+
+  """A list of Industry items."""
+  data: [Industry!]!
+}
+
+type Institution {
+  id: ObfId!
+  name: String!
+  is_reviewed: Boolean!
+  created_at: DateTime!
+  updated_at: DateTime!
+}
+
+"""A paginated list of Institution items."""
+type InstitutionPaginator {
+  """Pagination information about the list of items."""
+  paginatorInfo: PaginatorInfo!
+
+  """A list of Institution items."""
+  data: [Institution!]!
+}
+
+type ItSkill {
+  id: ObfId!
+  title: String!
+  is_reviewed: Boolean!
+  parent_id: ObfId
+  synonym_representative_id: ObfId
+  created_at: DateTime!
+  updated_at: DateTime!
+  synonyms: [ItSkill!]!
+  synonym_representative: ItSkill
+  parent: ItSkill
+  children: [ItSkill!]!
+}
+
+"""A paginated list of ItSkill items."""
+type ItSkillPaginator {
+  """Pagination information about the list of items."""
+  paginatorInfo: PaginatorInfo!
+
+  """A list of ItSkill items."""
+  data: [ItSkill!]!
+}
+
+enum JobLevel {
+  """Member of the supervisory board"""
+  MEMBER_OF_THE_SUPERVISORY_BOARD
+
+  """Member of the executive board"""
+  MEMBER_OF_THE_EXECUTIVE_BOARD
+
+  """Divisional director"""
+  DIVISIONAL_DIRECTOR
+
+  """Department manager"""
+  DEPARTMENT_MANAGER
+
+  """Team leader"""
+  TEAM_LEADER
+
+  """Senior"""
+  SENIOR
+
+  """Expert"""
+  EXPERT
+
+  """Specialist"""
+  SPECIALIST
+
+  """Trainee"""
+  TRAINEE
+
+  """Assistance or support"""
+  ASSISTANCE_OR_SUPPORT
+}
+
+"""
+The `JSON` scalar type represents JSON values as specified by
+        [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSON
+
+type Language {
+  code: String!
+  name: String!
+  language_pivot: LanguagePivot
+}
+
+enum LanguageLevel {
+  """Basic or advanced"""
+  BASIC_OR_ADVANCED
+
+  """Fluent"""
+  FLUENT
+
+  """Business fluent"""
+  BUSINESS_FLUENT
+
+  """Mother tongue"""
+  MOTHER_TONGUE
+}
+
+type LanguagePivot {
+  level: LanguageLevel
+}
+
+input LanguageRelationInput {
+  id: String!
+  level: LanguageLevel
+}
+
+type Location {
+  id: ObfId!
+  postal_code: String
+  city: String
+  street: String
+  house_number: String
+  country: String
+  label: String
+  full_address: String
+  lat: Float
+  long: Float
+  created_at: DateTime!
+  updated_at: DateTime!
+}
+
+"""
+Loose type that allows any value. Be careful when passing in large `Int` or `Float` literals,
+as they may not be parsed correctly on the server side. Use `String` literals if you are
+dealing with really large numbers to be on the safe side.
+"""
+scalar Mixed
+
+type Mutation {
+  createBucket(input: CreateBucketInput!): Bucket
+  updateBucket(id: ObfId!, input: UpdateBucketInput!): Bucket
+  updateBucketAdditional(id: ObfId!, input: UpdateBucketAdditionalInput!): Bucket
+  deleteBucket(id: ObfId!): Bucket
+  addToBucket(id: ObfId!, input: AddToBucketInput!): Bucket
+  removeFromBucket(id: ObfId!, input: AddToBucketInput!): Bucket
+  copyBucket(id: ObfId!): Bucket
+  createCandidate(input: CreateCandidateInput!): Candidate
+  updateCandidate(id: ObfId!, input: UpdateCandidateInput!): Candidate
+  updateCandidateAdditional(id: ObfId!, input: UpdateCandidateAdditionalInput!): Candidate
+  updateCandidateDocuments(id: ObfId!, input: UpdateDocumentsRelationInput!): Candidate
+  deleteCandidate(id: ObfId!): Candidate
+  forceDeleteCandidate(
+    id: ObfId!
+
+    """Allows to filter if trashed elements should be fetched."""
+    trashed: Trashed
+  ): Candidate
+  restoreCandidate(
+    id: ObfId!
+
+    """Allows to filter if trashed elements should be fetched."""
+    trashed: Trashed
+  ): Candidate
+  addCandidateToProject(candidateId: ObfId!, projectId: ObfId!): String
+  addCandidatesToProject(candidateIds: [ObfId!]!, projectId: ObfId!): String
+  removeCandidateFromLonglist(candidateId: ObfId!, projectId: ObfId!): String
+  removeCandidateFromShortlist(candidateId: ObfId!, projectId: ObfId!): Candidate
+  moveCandidateToShortlist(candidateId: ObfId!, projectId: ObfId!, pivot: CandidateProjectPivotInput): Candidate
+  updateCandidateProjectPivot(candidateId: ObfId!, projectId: ObfId!, pivot: CandidateProjectPivotInput): Candidate
+  rejectCandidateByCandidate(candidateId: ObfId!, projectId: ObfId!, note: String): CandidateAndEvent
+  rejectCandidateByClient(candidateId: ObfId!, projectId: ObfId!, note: String): CandidateAndEvent
+  rejectCandidateByBlackbull(candidateId: ObfId!, projectId: ObfId!, note: String): CandidateAndEvent
+  onHoldCandidateInProject(candidateId: ObfId!, projectId: ObfId!, note: String): CandidateAndEvent
+  reactivateCandidateInProject(candidateId: ObfId!, projectId: ObfId!, note: String): CandidateAndEvent
+  thumbUpCandidateByClient(candidateId: ObfId!, projectId: ObfId!, note: String): CandidateAndEvent
+  thumbDownCandidateByClient(candidateId: ObfId!, projectId: ObfId!, note: String): CandidateAndEvent
+  generateCandidateAccountCreationToken(candidate_id: ObfId!): Candidate
+  createUserForCandidate(candidate_id: ObfId!, token: String!, email: String!, password: String!): User
+  updateCandidateNotesWithinProject(projectId: ObfId!, candidateId: ObfId!, note: String): Candidate
+  sendConsentToCandidateInProject(candidateId: ObfId!, projectId: ObfId!): CandidateProjectPivot
+  consentCandidateInProject(candidateId: ObfId!, projectId: ObfId!, timestamp: String!): CandidateProjectPivot
+  contradictCandidateInProject(candidateId: ObfId!, projectId: ObfId!, timestamp: String!): CandidateProjectPivot
+  createCertification(input: CreateCertificationInput!): Certification!
+  updateCertification(id: ObfId!, input: UpdateCertificationInput!): Certification!
+  deleteCertification(id: ObfId!, transferLinkedDataTo: ObfId): Certification
+  createChArticle(input: CreateChArticleInput!): ChArticle
+  updateChArticle(id: ObfId!, input: UpdateChArticleInput!): ChArticle
+  deleteChArticle(id: ObfId!): ChArticle
+  uploadChArticleImage(file: Upload!): String
+  createChCategory(input: CreateChCategoryInput!): ChCategory
+  updateChCategory(id: ObfId!, input: UpdateChCategoryInput!): ChCategory
+  deleteChCategory(id: ObfId!): ChCategory
+  createChPodcast(input: CreateChPodcastInput!): ChPodcast
+  updateChPodcast(id: ObfId!, input: UpdateChPodcastInput!): ChPodcast
+  updateChPodcastAdditional(id: ObfId!, input: UpdateChPodcastAdditionalInput!): ChPodcast
+  deleteChPodcast(id: ObfId!): ChPodcast
+  createClient(input: CreateClientInput!): Client
+  updateClient(id: ObfId!, input: UpdateClientInput!): Client
+  deleteClient(id: ObfId!): Client
+  forceDeleteClient(
+    id: ObfId!
+
+    """Allows to filter if trashed elements should be fetched."""
+    trashed: Trashed
+  ): Client
+  restoreClient(
+    id: ObfId!
+
+    """Allows to filter if trashed elements should be fetched."""
+    trashed: Trashed
+  ): Client
+  generateClientAccountCreationToken(client_id: ObfId!): Client
+  createUserForClient(client_id: ObfId!, token: String!, email: String!, password: String!): User
+  createCompany(input: CreateCompanyInput!): Company
+  updateCompany(id: ObfId!, input: UpdateCompanyInput!): Company
+  updateCompanyAdditional(id: ObfId!, input: UpdateCompanyAdditionalInput!): Company
+  updateCompanyDocuments(id: ObfId!, input: UpdateDocumentsRelationInput!): Company
+  deleteCompany(id: ObfId!): Company
+  forceDeleteCompany(
+    id: ObfId!
+
+    """Allows to filter if trashed elements should be fetched."""
+    trashed: Trashed
+  ): Company
+  restoreCompany(
+    id: ObfId!
+
+    """Allows to filter if trashed elements should be fetched."""
+    trashed: Trashed
+  ): Company
+  transferCandidatesAndClients(
+    fromCompanyId: ObfId!
+    toCompanyId: ObfId!
+
+    """Allows to filter if trashed elements should be fetched."""
+    trashed: Trashed
+  ): Company
+  createDocumentTag(input: CreateDocumentTagInput!): DocumentTag!
+  createEmployee(input: CreateEmployeeInput!): Employee
+  updateEmployee(id: ObfId!, input: UpdateEmployeeInput!): Employee
+  updateEmployeeDocuments(id: ObfId!, input: UpdateDocumentsRelationInput!): Employee
+  deleteEmployee(id: ObfId!): Employee
+  forceDeleteEmployee(
+    id: ObfId!
+
+    """Allows to filter if trashed elements should be fetched."""
+    trashed: Trashed
+  ): Employee
+  restoreEmployee(
+    id: ObfId!
+
+    """Allows to filter if trashed elements should be fetched."""
+    trashed: Trashed
+  ): Employee
+  createEvent(input: CreateEventInput!): Event!
+  updateEvent(id: ObfId!, input: UpdateEventInput!): Event
+  deleteEvent(id: ObfId!): Event
+  createIndustry(input: CreateIndustryInput!): Industry!
+  updateIndustry(id: ObfId!, input: UpdateIndustryInput!): Industry!
+  deleteIndustry(id: ObfId!, transferLinkedDataTo: ObfId): Industry
+  createInstitution(input: CreateInstitutionInput!): Institution!
+  updateInstitution(id: ObfId!, input: UpdateInstitutionInput!): Institution!
+  deleteInstitution(id: ObfId!, transferLinkedDataTo: ObfId): Institution
+  createItSkill(input: CreateItSkillInput!): ItSkill!
+  updateItSkill(id: ObfId!, input: UpdateItSkillInput!): ItSkill!
+  deleteItSkill(id: ObfId!, transferLinkedDataTo: ObfId): ItSkill
+  addNewstickerIgnoredSource(name: String!): NewstickerIgnoredSource
+  upsertNewstickerItem(input: UpsertNewstickerItemInput!): NewstickerItem
+  deleteNewstickerItem(id: ObfId!): NewstickerItem
+  createProject(input: CreateProjectInput!): Project
+  updateProject(id: ObfId!, input: UpdateProjectInput!): Project
+  deleteProject(id: ObfId!): Project
+  forceDeleteProject(
+    id: ObfId!
+
+    """Allows to filter if trashed elements should be fetched."""
+    trashed: Trashed
+  ): Project
+  restoreProject(
+    id: ObfId!
+
+    """Allows to filter if trashed elements should be fetched."""
+    trashed: Trashed
+  ): Project
+  pauseProject(id: ObfId!, note: String): Project
+  resumeProject(id: ObfId!, note: String): Project
+  reactivateProject(id: ObfId!, note: String): Project
+  cancelProject(id: ObfId!, note: String, cancelled_by: ProjectCanceller!): Project
+  completeProject(id: ObfId!, note: String): Project
+  archiveProject(id: ObfId!): Project
+  unarchiveProject(id: ObfId!): Project
+  generateProjectShareLink(project_id: ObfId!, password: String, expires_after_days: Int!, is_longlist_shared: Boolean): ProjectSharedLink!
+  createRevenue(input: CreateRevenueInput!): Revenue
+  updateRevenue(id: ObfId!, input: UpdateRevenueInput!): Revenue
+  deleteRevenue(id: ObfId!): Revenue
+  setSetting(key: String!, value: JSON): Setting!
+  generatePublicDocumentLink(document_id: ObfId!, expires_after_days: Int!): SharedLink!
+  createSkill(input: CreateSkillInput!): Skill!
+  updateSkill(id: ObfId!, input: UpdateSkillInput!): Skill!
+  deleteSkill(id: ObfId!, transferLinkedDataTo: ObfId): Skill
+  login(email: String!, password: String!): TokenInfo!
+  loginAsUser(userId: ObfId!): TokenInfo!
+  logout: Boolean!
+  register(email: String!, password: String!, firstname: String, lastname: String): TokenInfo!
+  requestPasswordResetting(email: String!): String!
+  changeUserPassword(token: String!, email: String!, password: String!): String!
+  createUser(input: UpdateUserInput!): User
+  updateUser(id: ObfId!, input: UpdateUserInput!): User
+  deleteUser(id: ObfId!): User
+  createWorkingHours(input: CreateWorkingHoursInput!): WorkingHours
+  updateWorkingHours(input: UpdateWorkingHoursInput!): WorkingHours
+  deleteWorkingHours(id: ObfId!): WorkingHours
+  submitWorkingHoursRequestToClient(input: UpdateWorkingHoursInput!): WorkingHours!
+  modifyWorkingHoursByClient(input: UpdateWorkingHoursInput!): WorkingHours!
+  approveWorkingHours(id: ObfId!, status_note: String): WorkingHours!
+  declineWorkingHours(id: ObfId!, status_note: String): WorkingHours!
+}
+
+type Nationality {
+  id: String!
+  name: String!
+}
+
+input NationalityRelationInput {
+  id: String!
+}
+
+type NewstickerIgnoredSource {
+  id: ObfId!
+  name: String!
+}
+
+type NewstickerItem {
+  id: ObfId!
+  title: String!
+  url: String!
+  source: String!
+  published_at: DateTime!
+  status: NewstickerItemStatus!
+  created_at: DateTime!
+  updated_at: DateTime!
+}
+
+"""A paginated list of NewstickerItem items."""
+type NewstickerItemPaginator {
+  """Pagination information about the list of items."""
+  paginatorInfo: PaginatorInfo!
+
+  """A list of NewstickerItem items."""
+  data: [NewstickerItem!]!
+}
+
+enum NewstickerItemStatus {
+  """Pending"""
+  PENDING
+
+  """Published"""
+  PUBLISHED
+
+  """Ignored"""
+  IGNORED
+}
+
+scalar ObfId
+
+"""Allows ordering a list of records."""
+input OrderByClause {
+  """The column that is used for ordering."""
+  column: String!
+
+  """The direction that is used for ordering."""
+  order: SortOrder!
+}
+
+"""
+Aggregate functions when ordering by a relation without specifying a column.
+"""
+enum OrderByRelationAggregateFunction {
+  """Amount of items."""
+  COUNT
+}
+
+"""
+Aggregate functions when ordering by a relation that may specify a column.
+"""
+enum OrderByRelationWithColumnAggregateFunction {
+  """Average."""
+  AVG
+
+  """Minimum."""
+  MIN
+
+  """Maximum."""
+  MAX
+
+  """Sum."""
+  SUM
+
+  """Amount of items."""
+  COUNT
+}
+
+"""Information about pagination using a Relay style cursor connection."""
+type PageInfo {
+  """When paginating forwards, are there more items?"""
+  hasNextPage: Boolean!
+
+  """When paginating backwards, are there more items?"""
+  hasPreviousPage: Boolean!
+
+  """The cursor to continue paginating backwards."""
+  startCursor: String
+
+  """The cursor to continue paginating forwards."""
+  endCursor: String
+
+  """Total number of nodes in the paginated connection."""
+  total: Int!
+
+  """Number of nodes in the current page."""
+  count: Int!
+
+  """Index of the current page."""
+  currentPage: Int!
+
+  """Index of the last available page."""
+  lastPage: Int!
+}
+
+"""Information about pagination using a fully featured paginator."""
+type PaginatorInfo {
+  """Number of items in the current page."""
+  count: Int!
+
+  """Index of the current page."""
+  currentPage: Int!
+
+  """Index of the first item in the current page."""
+  firstItem: Int
+
+  """Are there more pages after this one?"""
+  hasMorePages: Boolean!
+
+  """Index of the last item in the current page."""
+  lastItem: Int
+
+  """Index of the last available page."""
+  lastPage: Int!
+
+  """Number of items per page."""
+  perPage: Int!
+
+  """Number of total available items."""
+  total: Int!
+}
+
+type Person {
+  id: ObfId!
+  title: String
+  firstname: String!
+  other_firstnames: String
+  lastname: String!
+  birth_name: String
+  gender: Gender
+  birthdate: Date
+  created_at: DateTime!
+  updated_at: DateTime!
+  deleted_at: DateTime
+  candidate_id: ObfId
+  client_id: ObfId
+  full_name: String!
+  foto: Image
+  histories: [History!]!
+  candidate: Candidate
+  client: Client
+}
+
+type Phonenumber {
+  id: ObfId!
+  country_code: String!
+  dial_code: String!
+  number: String!
+  label: String
+  created_at: DateTime!
+  updated_at: DateTime!
+}
+
+type Project {
+  id: ObfId!
+  status: ProjectStatus!
+  status_note: String
+  is_interim: Boolean!
+  is_permanent: Boolean!
+  title: String!
+  max_basic_salary: Float
+  max_bonus_eur: Float
+  is_business_car_included: Boolean
+  fee_structure: Int
+  max_daily_rate: Float
+  expenses_included: Boolean
+  retain: Float
+  project_start: Date
+  project_end: Date
+  placed_start_at: Date
+  notes: String
+  created_at: DateTime!
+  updated_at: DateTime!
+  deleted_at: DateTime
+  archived_at: DateTime
+  candidates_count: Int
+  shortlisted_candidates_count: Int
+  ir_name: String
+  ir_email: String
+  ir_phone: String
+  ir_vat: String
+  ir_po: String
+  ir_address: String
+  company: Company!
+  clients: [Client!]!
+  users: [User!]!
+  candidates: [Candidate!]!
+  placed_candidate: Candidate
+  shortlisted_candidates: [Candidate!]!
+  candidate(candidate_id: ObfId!): Candidate
+  histories: [History!]!
+  industries: [Industry!]!
+  skills: [Skill!]!
+  certifications: [Certification!]!
+  it_skills: [ItSkill!]!
+  languages: [Language!]!
+  documents: [Document!]!
+  shared_links: [ProjectSharedLink!]!
+  current_shared_link: ProjectSharedLink
+  client_events: [Event!]!
+  revenues: [Revenue!]!
+  pivot: ProjectUserPivot
+  candidate_project_pivot: CandidateProjectPivot
+  client_project_pivot: ClientProjectPivot
+  bucket_project_pivot: BucketMorphItemPivot
+}
+
+enum ProjectCanceller {
+  """Client"""
+  CLIENT
+
+  """Blackbull"""
+  BLACKBULL
+}
+
+"""A paginated list of Project items."""
+type ProjectPaginator {
+  """Pagination information about the list of items."""
+  paginatorInfo: PaginatorInfo!
+
+  """A list of Project items."""
+  data: [Project!]!
+}
+
+input ProjectsFilter {
+  title: String
+  user_id: ObfId
+  with_archived: Boolean
+  statuses: [ProjectStatus!]
+  industries: [ObfId!]
+  skills: [ObfId!]
+  daily_rate_min: Float
+  daily_rate_max: Float
+  salary_package_min: Float
+  salary_package_max: Float
+  project_start_from: Date
+  project_start_till: Date
+}
+
+type ProjectSharedLink {
+  token: String!
+  password: String!
+  expires_at: Date!
+  guest_accesses: Int!
+  is_longlist_shared: Boolean!
+  created_at: DateTime!
+  updated_at: DateTime!
+  project: Project!
+}
+
+enum ProjectStatus {
+  """Active"""
+  ACTIVE
+
+  """Paused"""
+  PAUSED
+
+  """Cancelled by client"""
+  CANCELLED_BY_CLIENT
+
+  """Cancelled by blackbull"""
+  CANCELLED_BY_BLACKBULL
+
+  """Placed"""
+  PLACED
+
+  """Runner"""
+  RUNNER
+
+  """Completed"""
+  COMPLETED
+}
+
+type ProjectUserPivot {
+  project_id: ObfId
+  user_id: ObfId
+  role: String!
+  percent: Float!
+}
+
+input ProjectUserRelationInput {
+  id: ObfId!
+  role: String
+  percent: Float
+}
+
+type Query {
+  me: User
+  bucket(id: ObfId!): Bucket
+  exportBucket(id: ObfId!, candidateColumns: [String!]!, clientColumns: [String!]!, companyColumns: [String!]!, projectColumns: [String!]!): String
+  candidate(
+    id: ObfId!
+
+    """Allows to filter if trashed elements should be fetched."""
+    trashed: Trashed
+  ): Candidate
+  suitableCandidatesForProject(project_id: ObfId!, first: Int!, page: Int): CandidatePaginator
+  getCandidateByAccountCreationToken(candidate_id: ObfId!, token: String!): Candidate
+  getConsentForCandidateInProject(candidateId: ObfId!, projectId: ObfId!, timestamp: String!): CandidateProjectPivot
+  allCertifications(orderBy: [OrderByClause!]): [Certification!]!
+  certification(id: ObfId!): Certification
+  chArticles(orderBy: [QueryChArticlesOrderByOrderByClause!]): [ChArticle!]!
+  chArticle(id: ObfId!): ChArticle
+  chArticleBySlug(slug: String!): ChArticle
+  chCategories(orderBy: [QueryChCategoriesOrderByOrderByClause!]): [ChCategory!]!
+  chCategory(id: ObfId!): ChCategory
+  chCategoryBySlug(slug: String!): ChCategory
+  chPodcasts(orderBy: [QueryChPodcastsOrderByOrderByClause!]): [ChPodcast!]!
+  chPodcast(id: ObfId!): ChPodcast
+  chPodcastBySlug(slug: String!): ChPodcast
+  clientsInCompany(company_id: ObfId!): [Client!]!
+  client(
+    id: ObfId!
+
+    """Allows to filter if trashed elements should be fetched."""
+    trashed: Trashed
+  ): Client
+  getClientByAccountCreationToken(client_id: ObfId!, token: String!): Client
+  company(
+    id: ObfId!
+
+    """Allows to filter if trashed elements should be fetched."""
+    trashed: Trashed
+  ): Company
+  getDocumentDownloadLink(id: ObfId!): String!
+  getDocumentPreviewLink(id: ObfId!): String!
+  getDocumentPreviewLinkByToken(id: ObfId!, password: String!, token: String!): String!
+  documentTags(orderBy: [OrderByClause!]): [DocumentTag!]!
+  employee(
+    id: ObfId!
+
+    """Allows to filter if trashed elements should be fetched."""
+    trashed: Trashed
+  ): Employee
+  event(id: ObfId!): Event
+  allIndustries(orderBy: [OrderByClause!]): [Industry!]!
+  industry(id: ObfId!): Industry
+  allInstitutions(orderBy: [OrderByClause!]): [Institution!]!
+  institution(id: ObfId!): Institution
+  allItSkills(orderBy: [OrderByClause!]): [ItSkill!]!
+  itSkill(id: ObfId!): ItSkill
+  languages: [Language!]
+  nationalities: [Nationality!]
+  newstickerIgnoredSources(orderBy: [QueryNewstickerIgnoredSourcesOrderByOrderByClause!]): NewstickerIgnoredSource
+  newstickerItem(id: ObfId!): NewstickerItem
+  people(names: FirstAndLastname): [Person!]!
+  getProjectByToken(password: String!, token: String!): Project
+  allProjects(
+    orderBy: [OrderByClause!]
+    filter: ProjectsFilter
+
+    """Allows to filter if trashed elements should be fetched."""
+    trashed: Trashed
+  ): [Project!]!
+  projectsForAutocompleteForLonglist(candidateId: ObfId!): [Project!]!
+  project(
+    id: ObfId!
+
+    """Allows to filter if trashed elements should be fetched."""
+    trashed: Trashed
+  ): Project
+  revenue(id: ObfId!): Revenue
+  revenueChartData(userId: ObfId!, year: Int): [RevenueChart!]!
+  revenueChartDataSum(year: Int): [RevenueChart!]!
+  setting(key: String!): Setting
+  getSharedLinksOfDocument(document_id: ObfId!): [SharedLink!]!
+  allSkills(orderBy: [OrderByClause!]): [Skill!]!
+  skill(id: ObfId!): Skill
+  license: StellaLicense
+  usersCount(roles: [UserRole!]): Int!
+  user(id: ObfId!): User
+  usersStatsCount(from: DateRequestTz!, till: DateRequestTz!): [UserStatsCount!]!
+  isResetPasswordTokenValid(token: String!): Boolean!
+  workingHours(id: ObfId!): WorkingHours
+  candidates(
+    orderBy: [OrderByClause!]
+    names: FirstAndLastname
+    anyName: String
+    filter: CandidatesFilter
+
+    """Limits number of fetched items. Maximum allowed value: 100."""
+    first: Int = 20
+
+    """The offset from which items are returned."""
+    page: Int
+
+    """Allows to filter if trashed elements should be fetched."""
+    trashed: Trashed
+  ): CandidatePaginator
+  certifications(
+    orderBy: [OrderByClause!]
+    title: String
+    is_reviewed: Boolean
+
+    """Limits number of fetched items. Maximum allowed value: 100."""
+    first: Int = 20
+
+    """The offset from which items are returned."""
+    page: Int
+  ): CertificationPaginator
+  clients(
+    orderBy: [OrderByClause!]
+    names: FirstAndLastname
+    filter: ClientsFilter
+
+    """Limits number of fetched items. Maximum allowed value: 100."""
+    first: Int = 20
+
+    """The offset from which items are returned."""
+    page: Int
+
+    """Allows to filter if trashed elements should be fetched."""
+    trashed: Trashed
+  ): ClientPaginator
+  companies(
+    orderBy: [OrderByClause!]
+    name: String
+    filter: CompaniesFilter
+
+    """Limits number of fetched items. Maximum allowed value: 100."""
+    first: Int = 20
+
+    """The offset from which items are returned."""
+    page: Int
+
+    """Allows to filter if trashed elements should be fetched."""
+    trashed: Trashed
+  ): CompanyPaginator
+  employees(
+    orderBy: [OrderByClause!]
+    where: QueryEmployeesWhereWhereConditions
+
+    """Limits number of fetched items. Maximum allowed value: 100."""
+    first: Int = 20
+
+    """The offset from which items are returned."""
+    page: Int
+
+    """Allows to filter if trashed elements should be fetched."""
+    trashed: Trashed
+  ): EmployeePaginator
+  industries(
+    orderBy: [OrderByClause!]
+    title: String
+    is_reviewed: Boolean
+
+    """Limits number of fetched items. Maximum allowed value: 100."""
+    first: Int = 20
+
+    """The offset from which items are returned."""
+    page: Int
+  ): IndustryPaginator
+  institutions(
+    orderBy: [OrderByClause!]
+    name: String
+    is_reviewed: Boolean
+
+    """Limits number of fetched items. Maximum allowed value: 100."""
+    first: Int = 20
+
+    """The offset from which items are returned."""
+    page: Int
+  ): InstitutionPaginator
+  itSkills(
+    orderBy: [OrderByClause!]
+    title: String
+    is_reviewed: Boolean
+
+    """Limits number of fetched items. Maximum allowed value: 100."""
+    first: Int = 20
+
+    """The offset from which items are returned."""
+    page: Int
+  ): ItSkillPaginator
+  newstickerItems(
+    orderBy: [QueryNewstickerItemsOrderByOrderByClause!]
+    status: [NewstickerItemStatus!]
+
+    """Limits number of fetched items. Maximum allowed value: 100."""
+    first: Int = 20
+
+    """The offset from which items are returned."""
+    page: Int
+  ): NewstickerItemPaginator
+  projects(
+    orderBy: [OrderByClause!]
+    filter: ProjectsFilter
+
+    """Limits number of fetched items. Maximum allowed value: 100."""
+    first: Int = 20
+
+    """The offset from which items are returned."""
+    page: Int
+
+    """Allows to filter if trashed elements should be fetched."""
+    trashed: Trashed
+  ): ProjectPaginator
+  revenues(
+    orderBy: [OrderByClause!]
+    filter: RevenuesFilter
+
+    """Limits number of fetched items. Maximum allowed value: 100."""
+    first: Int = 20
+
+    """The offset from which items are returned."""
+    page: Int
+  ): RevenuePaginator
+  skills(
+    orderBy: [OrderByClause!]
+    title: String
+    is_reviewed: Boolean
+
+    """Limits number of fetched items. Maximum allowed value: 100."""
+    first: Int = 20
+
+    """The offset from which items are returned."""
+    page: Int
+  ): SkillPaginator
+  users(
+    orderBy: [OrderByClause!]
+    where: QueryUsersWhereWhereConditions
+    roles: [UserRole!]
+
+    """Limits number of fetched items. Maximum allowed value: 100."""
+    first: Int = 20
+
+    """The offset from which items are returned."""
+    page: Int
+  ): UserPaginator
+}
+
+"""Allowed column names for Query.chArticles.orderBy."""
+enum QueryChArticlesOrderByColumn {
+  TITLE
+  UPDATED_AT
+  CREATED_AT
+}
+
+"""Order by clause for Query.chArticles.orderBy."""
+input QueryChArticlesOrderByOrderByClause {
+  """The column that is used for ordering."""
+  column: QueryChArticlesOrderByColumn!
+
+  """The direction that is used for ordering."""
+  order: SortOrder!
+}
+
+"""Allowed column names for Query.chCategories.orderBy."""
+enum QueryChCategoriesOrderByColumn {
+  TITLE
+  UPDATED_AT
+}
+
+"""Order by clause for Query.chCategories.orderBy."""
+input QueryChCategoriesOrderByOrderByClause {
+  """The column that is used for ordering."""
+  column: QueryChCategoriesOrderByColumn!
+
+  """The direction that is used for ordering."""
+  order: SortOrder!
+}
+
+"""Allowed column names for Query.chPodcasts.orderBy."""
+enum QueryChPodcastsOrderByColumn {
+  TITLE
+  UPDATED_AT
+  CREATED_AT
+}
+
+"""Order by clause for Query.chPodcasts.orderBy."""
+input QueryChPodcastsOrderByOrderByClause {
+  """The column that is used for ordering."""
+  column: QueryChPodcastsOrderByColumn!
+
+  """The direction that is used for ordering."""
+  order: SortOrder!
+}
+
+"""Allowed column names for Query.employees.where."""
+enum QueryEmployeesWhereColumn {
+  FAMILIENNAME
+  VORNAME
+  PERSONALNUMMER
+  BETR_PERSONALNUMMER
+}
+
+"""
+Dynamic WHERE conditions for the `where` argument on the query `employees`.
+"""
+input QueryEmployeesWhereWhereConditions {
+  """The column that is used for the condition."""
+  column: QueryEmployeesWhereColumn
+
+  """The operator that is used for the condition."""
+  operator: SQLOperator
+
+  """The value that is used for the condition."""
+  value: Mixed
+
+  """A set of conditions that requires all conditions to match."""
+  AND: [QueryEmployeesWhereWhereConditions!]
+
+  """A set of conditions that requires at least one condition to match."""
+  OR: [QueryEmployeesWhereWhereConditions!]
+
+  """
+  Check whether a relation exists. Extra conditions or a minimum amount can be applied.
+  """
+  HAS: QueryEmployeesWhereWhereConditionsRelation
+}
+
+"""
+Dynamic HAS conditions for WHERE conditions for the `where` argument on the query `employees`.
+"""
+input QueryEmployeesWhereWhereConditionsRelation {
+  """The relation that is checked."""
+  relation: String!
+
+  """The comparison operator to test against the amount."""
+  operator: SQLOperator
+
+  """The amount to test."""
+  amount: Int
+
+  """Additional condition logic."""
+  condition: QueryEmployeesWhereWhereConditions
+}
+
+"""Allowed column names for Query.newstickerIgnoredSources.orderBy."""
+enum QueryNewstickerIgnoredSourcesOrderByColumn {
+  NAME
+}
+
+"""Order by clause for Query.newstickerIgnoredSources.orderBy."""
+input QueryNewstickerIgnoredSourcesOrderByOrderByClause {
+  """The column that is used for ordering."""
+  column: QueryNewstickerIgnoredSourcesOrderByColumn!
+
+  """The direction that is used for ordering."""
+  order: SortOrder!
+}
+
+"""Allowed column names for Query.newstickerItems.orderBy."""
+enum QueryNewstickerItemsOrderByColumn {
+  PUBLISHED_AT
+}
+
+"""Order by clause for Query.newstickerItems.orderBy."""
+input QueryNewstickerItemsOrderByOrderByClause {
+  """The column that is used for ordering."""
+  column: QueryNewstickerItemsOrderByColumn!
+
+  """The direction that is used for ordering."""
+  order: SortOrder!
+}
+
+"""Allowed column names for Query.users.where."""
+enum QueryUsersWhereColumn {
+  FIRSTNAME
+  LASTNAME
+  EMAIL
+}
+
+"""
+Dynamic WHERE conditions for the `where` argument on the query `users`.
+"""
+input QueryUsersWhereWhereConditions {
+  """The column that is used for the condition."""
+  column: QueryUsersWhereColumn
+
+  """The operator that is used for the condition."""
+  operator: SQLOperator
+
+  """The value that is used for the condition."""
+  value: Mixed
+
+  """A set of conditions that requires all conditions to match."""
+  AND: [QueryUsersWhereWhereConditions!]
+
+  """A set of conditions that requires at least one condition to match."""
+  OR: [QueryUsersWhereWhereConditions!]
+
+  """
+  Check whether a relation exists. Extra conditions or a minimum amount can be applied.
+  """
+  HAS: QueryUsersWhereWhereConditionsRelation
+}
+
+"""
+Dynamic HAS conditions for WHERE conditions for the `where` argument on the query `users`.
+"""
+input QueryUsersWhereWhereConditionsRelation {
+  """The relation that is checked."""
+  relation: String!
+
+  """The comparison operator to test against the amount."""
+  operator: SQLOperator
+
+  """The amount to test."""
+  amount: Int
+
+  """Additional condition logic."""
+  condition: QueryUsersWhereWhereConditions
+}
+
+type Revenue {
+  id: ObfId!
+  year: Int!
+  month: Int!
+  amount: BigInt!
+  type: RevenueType!
+  stage: RevenueStage!
+  created_at: DateTime!
+  updated_at: DateTime!
+  project_id: ObfId!
+  author_id: ObfId!
+  project: Project!
+  author: User!
+  users: [User!]!
+  revenue_users: [RevenueUserPivot!]!
+}
+
+type RevenueChart {
+  id: ID!
+  user_id: ObfId
+  year: Int!
+  month: Int!
+  stats: RevenueChartBreakout!
+}
+
+type RevenueChartBreakout {
+  FORECAST: BigInt!
+  READY_TO_INVOICE: BigInt!
+  INVOICE_SENT: BigInt!
+  PAID: BigInt!
+}
+
+"""A paginated list of Revenue items."""
+type RevenuePaginator {
+  """Pagination information about the list of items."""
+  paginatorInfo: PaginatorInfo!
+
+  """A list of Revenue items."""
+  data: [Revenue!]!
+}
+
+input RevenuesFilter {
+  search: String
+  type: RevenueType
+  stage: RevenueStage
+  user_id: ObfId
+  year: Int
+  month: Int
+}
+
+enum RevenueStage {
+  """Pending or cancelled"""
+  PENDING_OR_CANCELLED
+
+  """Forecast"""
+  FORECAST
+
+  """Ready to invoice"""
+  READY_TO_INVOICE
+
+  """Invoice sent"""
+  INVOICE_SENT
+
+  """Paid"""
+  PAID
+}
+
+enum RevenueType {
+  """Retainer"""
+  RETAINER
+
+  """Shortlist fee"""
+  SHORTLIST_FEE
+
+  """Completion fee"""
+  COMPLETION_FEE
+
+  """Success fee"""
+  SUCCESS_FEE
+
+  """Cancellation fee"""
+  CANCELLATION_FEE
+
+  """Admin fee"""
+  ADMIN_FEE
+
+  """Monthly fee"""
+  MONTHLY_FEE
+}
+
+type RevenueUserPivot {
+  id: ID!
+  user_id: ObfId!
+  revenue_id: ObfId!
+  percent: Int!
+  revenue: Revenue!
+  user: User!
+}
+
+input RevenueUserRelationInput {
+  id: ObfId!
+  percent: Float
+}
+
+type Setting {
+  key: String!
+  value: JSON
+  created_at: DateTime!
+  updated_at: DateTime!
+}
+
+type SharedLink {
+  id: ObfId!
+  token: String!
+  views: Int!
+  expires_at: DateTime!
+  created_at: DateTime!
+  updated_at: DateTime!
+  URL: String!
+  document: Document!
+}
+
+type Sickness {
+  id: ObfId!
+  from: Date!
+  till: Date!
+  days_count: Int!
+  status: SicknessStatus!
+}
+
+enum SicknessStatus {
+  """Submitted"""
+  SUBMITTED
+
+  """Processed"""
+  PROCESSED
+}
+
+"""Information about pagination using a simple paginator."""
+type SimplePaginatorInfo {
+  """Number of items in the current page."""
+  count: Int!
+
+  """Index of the current page."""
+  currentPage: Int!
+
+  """Index of the first item in the current page."""
+  firstItem: Int
+
+  """Index of the last item in the current page."""
+  lastItem: Int
+
+  """Number of items per page."""
+  perPage: Int!
+}
+
+type Skill {
+  id: ObfId!
+  title: String!
+  is_reviewed: Boolean!
+  parent_id: ObfId
+  synonym_representative_id: ObfId
+  created_at: DateTime!
+  updated_at: DateTime!
+  synonyms: [Skill!]!
+  synonym_representative: Skill
+  parent: Skill
+  children: [Skill!]!
+}
+
+"""A paginated list of Skill items."""
+type SkillPaginator {
+  """Pagination information about the list of items."""
+  paginatorInfo: PaginatorInfo!
+
+  """A list of Skill items."""
+  data: [Skill!]!
+}
+
+"""Directions for ordering a list of records."""
+enum SortOrder {
+  """Sort records in ascending order."""
+  ASC
+
+  """Sort records in descending order."""
+  DESC
+}
+
+"""The available SQL operators that are used to filter query results."""
+enum SQLOperator {
+  """Equal operator (`=`)"""
+  EQ
+
+  """Not equal operator (`!=`)"""
+  NEQ
+
+  """Greater than operator (`>`)"""
+  GT
+
+  """Greater than or equal operator (`>=`)"""
+  GTE
+
+  """Less than operator (`<`)"""
+  LT
+
+  """Less than or equal operator (`<=`)"""
+  LTE
+
+  """Simple pattern matching (`LIKE`)"""
+  LIKE
+
+  """Negation of simple pattern matching (`NOT LIKE`)"""
+  NOT_LIKE
+
+  """Whether a value is within a set of values (`IN`)"""
+  IN
+
+  """Whether a value is not within a set of values (`NOT IN`)"""
+  NOT_IN
+
+  """Whether a value is within a range of values (`BETWEEN`)"""
+  BETWEEN
+
+  """Whether a value is not within a range of values (`NOT BETWEEN`)"""
+  NOT_BETWEEN
+
+  """Whether a value is null (`IS NULL`)"""
+  IS_NULL
+
+  """Whether a value is not null (`IS NOT NULL`)"""
+  IS_NOT_NULL
+
+  """Simple pattern matching (`ILIKE`)"""
+  ILIKE
+}
+
+type StellaLicense {
+  id: ObfId!
+  host: String!
+  plugins: [StellaPlugin!]!
+  client_name: String
+  email: String
+  users_limit: Int!
+  is_active: Boolean!
+  logo_url: String
+  created_at: DateTime!
+  updated_at: DateTime!
+}
+
+enum StellaPlugin {
+  """Corona helpdesk"""
+  CORONA_HELPDESK
+
+  """Employees"""
+  EMPLOYEES
+}
+
+type TokenInfo {
+  userId: Int!
+}
+
+"""
+Specify if you want to include or exclude trashed results from a query.
+"""
+enum Trashed {
+  """Only return trashed results."""
+  ONLY
+
+  """Return both trashed and non-trashed results."""
+  WITH
+
+  """Only return non-trashed results."""
+  WITHOUT
+}
+
+input UpdateBucketableRelation {
+  sync: [BucketableSyncInput!]
+}
+
+input UpdateBucketAdditionalInput {
+  candidates: UpdateBucketableRelation
+  clients: UpdateBucketableRelation
+  companies: UpdateBucketableRelation
+  projects: UpdateBucketableRelation
+  shared_with: UpdateBucketPermissionsRelation
+}
+
+input UpdateBucketInput {
+  title: String
+  notes: String
+  shared_with: UpdateBucketPermissionsRelation
+}
+
+input UpdateBucketPermissionsRelation {
+  sync: [BucketPermissionSyncInput!]
+}
+
+input UpdateCandidateAdditionalInput {
+  companies: UpdateCandidateCompanyRelation
+}
+
+input UpdateCandidateChCategoryRelation {
+  sync: [CandidateChCategoryRelationInput!]
+}
+
+input UpdateCandidateCompanyRelation {
+  sync: [CandidateCompanyRelationInput!]
+}
+
+input UpdateCandidateInput {
+  email: String
+  is_blacklisted: Boolean
+  blacklisting_reason: String
+  is_interim: Boolean
+  is_permanent: Boolean
+  marital_status: String
+  skype_name: String
+  desired_job: String
+  max_distance_from_home: String
+  willing_to_travel: Int
+  available_from: Date
+  daily_rate: Float
+  expenses_included: Boolean
+  period_of_notice: JSON
+  basic_salary: Float
+  bonus_eur: Float
+  is_business_car_included: Boolean
+  other_bonus: String
+  notes: String
+  linked_in_profile: String
+  xing_profile: String
+  url: String
+  is_research: Boolean
+  has_hourly_rate: Boolean
+  zoom_id: String
+  person: DefinePersonRelation
+  location: UpdateLocationRelation
+  phonenumbers: UpdatePhonenumberRelation
+  industries: DefineIndustryRelation
+  skills: DefineSkillRelation
+  certifications: DefineCertificationRelation
+  it_skills: DefineItSkillRelation
+  languages: DefineLanguageRelation
+  nationalities: DefineNationalityRelation
+  educations: UpdateEducationRelation
+}
+
+input UpdateCertificationInput {
+  title: String
+  synonym_representative_id: ObfId
+  parent_id: ObfId
+  children_ids: [ObfId!]
+}
+
+input UpdateChArticleInput {
+  title: String
+  image_copyright: String
+  content: String
+  category: String
+  author: String
+  author_position: String
+  author_company: String
+  image: CroppedImageUpload
+  author_image: CroppedImageUpload
+}
+
+input UpdateChCategoryInput {
+  title: String
+  short_text: String
+  long_text: String
+  candidates: UpdateCandidateChCategoryRelation
+}
+
+input UpdateChPodcastAdditionalInput {
+  audio: Upload
+}
+
+input UpdateChPodcastInput {
+  title: String
+  description: String
+  rss_title: String
+  rss_description: String
+  duration: Int
+  category: String
+  image: CroppedImageUpload
+}
+
+input UpdateClientInput {
+  email: String
+  position: String
+  company_id: ObfId
+  location_id: ObfId
+  need_review_after_autocomplete: Boolean
+  notes: String
+  is_research: Boolean
+  zoom_id: String
+  person: DefinePersonRelation
+  phonenumbers: UpdatePhonenumberRelation
+}
+
+input UpdateCompanyAdditionalInput {
+  sync_clients: [ObfId!]
+
+  """
+  Enter an ID to overwrite to new parent relation. Enter null to dissociate relation
+  """
+  parent_company_id: ObfId
+
+  """
+  Sync children companies. Only given IDs will be associated to current company. All others will be dissociated!
+  """
+  sync_children_company: [ObfId!]
+}
+
+input UpdateCompanyInput {
+  name: String
+  legal_form: String
+  alias: String
+  website: String
+  email: String
+  employees_count: String
+  annual_sales: Float
+  about: String
+  need_review_after_autocomplete: Boolean
+  jobs_external_link: String
+  invoice_notes: String
+  industries: DefineIndustryRelation
+  locations: UpdateLocationsRelation
+  phonenumbers: UpdatePhonenumberRelation
+  logo: CroppedImageUpload
+}
+
+input UpdateDocumentInput {
+  id: ObfId!
+  title: String
+  tags: DefineDocumentTagRelation
+}
+
+input UpdateDocumentsRelationInput {
+  create: [CreateDocumentInput!]
+  update: [UpdateDocumentInput!]
+  delete: [ObfId!]
+}
+
+input UpdateEducationRelation {
+  sync: [EducationRelationInput!]
+}
+
+input UpdateEmployeeInput {
+  user_id: ObfId
+  personalnummer: String
+  betr_personalnummer: String
+  familienname: String
+  geburtsname: String
+  vorname: String
+  geburtsdatum: Date
+  geschlecht: Gender
+  versicherungsnummer: String
+  geburtsort: String
+  familienstand: String
+  schwerbehindert: Boolean
+  iban: String
+  bic: String
+  eintrittsdatum: Date
+  ersteintrittsdatum: Date
+  betriebsstaette: String
+  berufsbezeichnung: String
+  ausgeuebte_taetigkeit: String
+  beschaeftigungsart: EmployeeBeschaeftigungsart
+  probezeit: Boolean
+  probezeit_dauer: String
+  weitere_beschaeftigungen: Boolean
+  ist_weitere_beschaeftigung_geringfuegig: Boolean
+  hoechster_schullabschluss: EmployeeSchulabschluss
+  hoechste_berufsausbildung: EmployeeBerufsausbildung
+  beginn_der_ausbildung: Date
+  voraussichtliches_ende_der_ausbildung: Date
+  im_baugewerbe_seit: Date
+  woechentliche_arbeitszeit: EmployeeWoechentlicheArbeitszeit
+  verteilung_der_woechentlichen_arbeitszeit: JSON
+  urlaubsanspruch: Int
+  ist_befristet: Boolean
+  ist_zweckbefristet: Boolean
+  befristung_arbeitsvertrag_zum: Date
+  schrieftlicher_abschluss_des_befristeten_arbeitsvertrages: Boolean
+  abschluss_arbeitsvertrag_am: Date
+  befristet_mit_aussicht: Boolean
+  ich_wiederspreche_bea_an_bafa: Boolean
+  identifikationsnummer: String
+  finanzamt_nummer: String
+  steuerklasse_faktor: String
+  kinderfreibetraege: String
+  konfession: String
+  gesetzliche_krankenkasse: String
+  elterneigenschaft: Boolean
+  entl_bezeichnung: String
+  entl_betrag: Float
+  entl_gueltig_ab: Date
+  stundenlohn: Float
+  stundenlohn_gueltig_ab: Date
+  vwl_empfaenger: String
+  vwl_betrag: Float
+  vwl_ag_anteil: Float
+  vwl_seit_wann: Date
+  vwl_vertragsnummer: String
+  vwl_iban: String
+  vwl_bic: String
+  steuerpflichtige_vorbeschaeftigung_im_laufenden_kalenderjahr: JSON
+  location: UpdateLocationRelation
+  staatsangehoerigkeit: DefineNationalityRelation
+}
+
+input UpdateEventInput {
+  group: EventGroup!
+  type: EventType!
+  notes: String
+  happened_at: DateTime!
+}
+
+input UpdateIndustryInput {
+  title: String
+  synonym_representative_id: ObfId
+  parent_id: ObfId
+  children_ids: [ObfId!]
+}
+
+input UpdateInstitutionInput {
+  name: String
+}
+
+input UpdateItSkillInput {
+  title: String
+  synonym_representative_id: ObfId
+  parent_id: ObfId
+  children_ids: [ObfId!]
+}
+
+input UpdateLocationInput {
+  id: ObfId!
+  postal_code: String
+  city: String
+  street: String
+  house_number: String
+  country: String
+  label: String
+  full_address: String
+  lat: Float
+  long: Float
+}
+
+input UpdateLocationRelation {
+  create: CreateLocationInput
+  update: UpdateLocationInput
+  delete: ObfId
+}
+
+input UpdateLocationsRelation {
+  create: [CreateLocationInput!]
+  update: [UpdateLocationInput!]
+  delete: [ObfId!]
+}
+
+input UpdatePhonenumberInput {
+  id: ObfId!
+  country_code: String
+  dial_code: String
+  number: String
+  label: String
+}
+
+input UpdatePhonenumberRelation {
+  create: [CreatePhonenumberInput!]
+  update: [UpdatePhonenumberInput!]
+  delete: [ObfId!]
+}
+
+input UpdateProjectInput {
+  is_interim: Boolean
+  is_permanent: Boolean
+  title: String
+  max_basic_salary: Float
+  max_bonus_eur: Float
+  is_business_car_included: Boolean
+  fee_structure: Int
+  max_daily_rate: Float
+  expenses_included: Boolean
+  retain: Float
+  project_start: Date
+  project_end: Date
+  placed_start_at: Date
+  notes: String
+  ir_name: String
+  ir_email: String
+  ir_phone: String
+  ir_vat: String
+  ir_po: String
+  ir_address: String
+  company_id: ObfId
+  clients: DefineClientRelation
+  industries: DefineIndustryRelation
+  skills: DefineSkillRelation
+  certifications: DefineCertificationRelation
+  it_skills: DefineItSkillRelation
+  languages: DefineLanguageRelation
+  users: UpdateProjectUserRelation
+  documents: UpdateDocumentsRelationInput
+}
+
+input UpdateProjectUserRelation {
+  sync: [ProjectUserRelationInput!]
+}
+
+input UpdateRevenueInput {
+  year: Int
+  month: Int
+  amount: BigInt
+  type: RevenueType
+  stage: RevenueStage
+  users: UpdateRevenueUserRelation
+}
+
+input UpdateRevenueUserRelation {
+  sync: [RevenueUserRelationInput!]
+}
+
+input UpdateSkillInput {
+  title: String
+  synonym_representative_id: ObfId
+  parent_id: ObfId
+  children_ids: [ObfId!]
+}
+
+input UpdateUserInput {
+  email: String
+  firstname: String
+  lastname: String
+  roles: [UserRole!]
+  password: String
+  contact_email: String
+  contact_number: String
+  foto: CroppedImageUpload
+}
+
+input UpdateWorkingHoursInput {
+  id: ObfId!
+  units: [WorkingHoursUnitInput!]
+  status_note: String
+}
+
+"""
+Can be used as an argument to upload files using https://github.com/jaydenseric/graphql-multipart-request-spec
+"""
+scalar Upload
+
+input UpsertNewstickerItemInput {
+  id: ObfId
+  title: String
+  url: String
+  source: String
+  published_at: DateTime
+  status: NewstickerItemStatus
+}
+
+input UpsertPersonInput {
+  id: ObfId
+  title: String
+  firstname: String!
+  other_firstnames: String
+  lastname: String!
+  birth_name: String
+  gender: Gender
+  birthdate: Date
+  foto: CroppedImageUpload
+}
+
+type User {
+  id: ObfId
+  email: String
+  firstname: String
+  lastname: String
+  created_at: DateTime!
+  updated_at: DateTime!
+  roles: [UserRole!]!
+  contact_email: String
+  contact_number: String
+  projects: [Project!]!
+  revenues(where: UserRevenuesWhereWhereConditions): [Revenue!]!
+  events(onlyDay: DateRequestTz): [Event!]!
+  buckets: [Bucket!]!
+  shared_buckets: [Bucket!]!
+  candidate: Candidate
+  client: Client
+  foto: Image
+  pivot: ProjectUserPivot
+  bucket_user_permission: BucketUserPermission
+  stats(from: DateRequestTz!, till: DateRequestTz!): UserStats!
+}
+
+"""A paginated list of User items."""
+type UserPaginator {
+  """Pagination information about the list of items."""
+  paginatorInfo: PaginatorInfo!
+
+  """A list of User items."""
+  data: [User!]!
+}
+
+"""Allowed column names for User.revenues.where."""
+enum UserRevenuesWhereColumn {
+  YEAR
+  MONTH
+}
+
+"""
+Dynamic WHERE conditions for the `where` argument on the query `revenues`.
+"""
+input UserRevenuesWhereWhereConditions {
+  """The column that is used for the condition."""
+  column: UserRevenuesWhereColumn
+
+  """The operator that is used for the condition."""
+  operator: SQLOperator
+
+  """The value that is used for the condition."""
+  value: Mixed
+
+  """A set of conditions that requires all conditions to match."""
+  AND: [UserRevenuesWhereWhereConditions!]
+
+  """A set of conditions that requires at least one condition to match."""
+  OR: [UserRevenuesWhereWhereConditions!]
+
+  """
+  Check whether a relation exists. Extra conditions or a minimum amount can be applied.
+  """
+  HAS: UserRevenuesWhereWhereConditionsRelation
+}
+
+"""
+Dynamic HAS conditions for WHERE conditions for the `where` argument on the query `revenues`.
+"""
+input UserRevenuesWhereWhereConditionsRelation {
+  """The relation that is checked."""
+  relation: String!
+
+  """The comparison operator to test against the amount."""
+  operator: SQLOperator
+
+  """The amount to test."""
+  amount: Int
+
+  """Additional condition logic."""
+  condition: UserRevenuesWhereWhereConditions
+}
+
+enum UserRole {
+  """Guest"""
+  Guest
+
+  """Candidate"""
+  Candidate
+
+  """Company"""
+  Company
+
+  """Client"""
+  Client
+
+  """Employee"""
+  Employee
+
+  """Admin"""
+  Admin
+
+  """Employee manager"""
+  EmployeeManager
+
+  """Corona helpdesk manager"""
+  CoronaHelpdeskManager
+
+  """User manager"""
+  UserManager
+
+  """Revenue manager"""
+  RevenueManager
+
+  """Files downloader"""
+  FilesDownloader
+
+  """Tokenized shared project"""
+  TokenizedSharedProject
+}
+
+type UserStats {
+  createdClients: [Client!]!
+  createdCandidates: [Candidate!]!
+  createdCompanies: [Company!]!
+  createdProjects: [Project!]!
+  createdEvents: [Event!]!
+  happenedEvents: [Event!]!
+}
+
+type UserStatsCount {
+  user: User!
+  createdClients: Int!
+  createdCandidates: Int!
+  createdCompanies: Int!
+  createdProjects: Int!
+  createdEvents: Int!
+  happenedEvents: Int!
+}
+
+type Vacation {
+  id: ObfId!
+  from: Date!
+  till: Date!
+  days_count: Int!
+  status: VacationStatus!
+  is_for_last_year: Boolean!
+}
+
+type VacationCapacity {
+  year: Int!
+  days_count: Int!
+}
+
+enum VacationStatus {
+  """Requested"""
+  REQUESTED
+
+  """Approved"""
+  APPROVED
+
+  """Declined"""
+  DECLINED
+}
+
+"""Dynamic WHERE conditions for queries."""
+input WhereConditions {
+  """The column that is used for the condition."""
+  column: String
+
+  """The operator that is used for the condition."""
+  operator: SQLOperator
+
+  """The value that is used for the condition."""
+  value: Mixed
+
+  """A set of conditions that requires all conditions to match."""
+  AND: [WhereConditions!]
+
+  """A set of conditions that requires at least one condition to match."""
+  OR: [WhereConditions!]
+
+  """
+  Check whether a relation exists. Extra conditions or a minimum amount can be applied.
+  """
+  HAS: WhereConditionsRelation
+}
+
+"""Dynamic HAS conditions for WHERE condition queries."""
+input WhereConditionsRelation {
+  """The relation that is checked."""
+  relation: String!
+
+  """The comparison operator to test against the amount."""
+  operator: SQLOperator
+
+  """The amount to test."""
+  amount: Int
+
+  """Additional condition logic."""
+  condition: WhereConditions
+}
+
+type WorkingHours {
+  id: ObfId!
+  billing_type: BillingType!
+  purchasing_per_unit: Float
+  retail_per_unit: Float
+  units: [WorkingHoursUnit!]!
+  units_diff: WorkingHoursUnitsDiff
+  requested_at: DateTime
+  client_approved_at: DateTime
+  client_declined_at: DateTime
+  candidate_approved_at: DateTime
+  candidate_declined_at: DateTime
+  updated_at: DateTime!
+  created_at: DateTime!
+  status: WorkingHoursStatus!
+  status_note: String
+  project: Project!
+  candidate: Candidate!
+  client: Client
+}
+
+enum WorkingHoursStatus {
+  """Draft"""
+  DRAFT
+
+  """Requested by candidate"""
+  REQUESTED_BY_CANDIDATE
+
+  """Declined by client"""
+  DECLINED_BY_CLIENT
+
+  """Approved by client"""
+  APPROVED_BY_CLIENT
+
+  """Modified by client"""
+  MODIFIED_BY_CLIENT
+
+  """Approved by candidate"""
+  APPROVED_BY_CANDIDATE
+
+  """Declined by candidate"""
+  DECLINED_BY_CANDIDATE
+}
+
+type WorkingHoursUnit {
+  date: Date!
+  hours: Float
+  note: String
+}
+
+input WorkingHoursUnitInput {
+  date: Date!
+  hours: Float
+  note: String
+}
+
+type WorkingHoursUnitsDiff {
+  new: [Date!]!
+  changed: [Date!]!
+  removed: [Date!]!
+}
+
+enum WorkPlace {
+  """Remote"""
+  REMOTE
+
+  """Onsite"""
+  ONSITE
+
+  """Remote and onsite"""
+  REMOTE_AND_ONSITE
+}
+
+enum WorkTime {
+  """Fulltime"""
+  FULLTIME
+
+  """Parttime"""
+  PARTTIME
+
+  """Fulltime and parttime"""
+  FULLTIME_AND_PARTTIME
+}

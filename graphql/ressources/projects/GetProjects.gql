@@ -1,0 +1,13 @@
+#import "../../fragments/Paginator.gql"
+#import "../../fragments/GetProjects.gql"
+
+query GetProjects ($orderBy: [OrderByClause!], $first: Int!, $page: Int, $filter: ProjectsFilter){
+  projects(orderBy: $orderBy, first: $first, page: $page, filter: $filter) {
+    data {
+      ...GetProjects
+    }
+    paginatorInfo {
+      ...Paginator
+    }
+  }
+}

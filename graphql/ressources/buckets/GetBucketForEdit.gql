@@ -1,0 +1,17 @@
+query GetBucketForEdit($id: ObfId!) {
+  bucket(id: $id) {
+    id
+    title
+    notes
+    owner_id
+
+    shared_with {
+      id
+      firstname
+      lastname
+      bucket_user_permission {
+        is_write_allowed
+      }
+    }
+  }
+}

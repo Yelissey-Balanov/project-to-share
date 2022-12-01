@@ -1,0 +1,7 @@
+mutation UpdateIndustry($id: ObfId!, $input: UpdateIndustryInput!) {
+    updateIndustry(id: $id, input: $input) {
+      id
+      title
+      is_reviewed
+    }
+}

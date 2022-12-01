@@ -1,0 +1,9 @@
+mutation GenerateProjectShareLink($project_id: ObfId!, $expires_after_days: Int!, $is_longlist_shared: Boolean) {
+  generateProjectShareLink(project_id: $project_id, expires_after_days: $expires_after_days, is_longlist_shared: $is_longlist_shared) {
+    token
+    password
+    expires_at
+    guest_accesses
+    is_longlist_shared
+  }
+}

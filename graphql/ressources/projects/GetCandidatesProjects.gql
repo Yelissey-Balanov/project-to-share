@@ -1,0 +1,56 @@
+#import "../../fragments/Paginator.gql"
+#import "../../fragments/ImageSizeFormat.gql"
+
+query GetCandidatesProjects ($first: Int!, $page: Int){
+  me {
+    id
+    candidate {
+      id
+      placed_projects(first: $first, page: $page) {
+        data {
+          id
+          title
+          status
+          is_interim
+          is_permanent
+          company {
+            id
+            aliasOrName
+            logo {
+              id
+              sizes {
+                PROFILE_IMAGE {
+                  ...ImageSizeFormat
+                }
+              }
+            }
+          }
+          clients {
+            id
+            person {
+              id
+              full_name
+              foto {
+                id
+                sizes {
+                  PROFILE_IMAGE {
+                    ...ImageSizeFormat
+                  }
+                }
+              }
+            }
+          }
+          placed_start_at
+#          users {
+#            id
+#            firstname
+#            lastname
+#          }
+        }
+        paginatorInfo {
+          ...Paginator
+        }
+      }
+    }
+  }
+}

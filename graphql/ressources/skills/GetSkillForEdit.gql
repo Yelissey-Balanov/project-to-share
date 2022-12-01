@@ -1,0 +1,20 @@
+query GetSkillForEdit ($id: ObfId!){
+  skill(id: $id) {
+    id
+    title
+    is_reviewed
+    synonym_representative {
+      id
+      title
+    }
+    parent {
+      id
+      title
+    }
+    parent_id
+    children {
+      id
+      title
+    }
+  }
+}

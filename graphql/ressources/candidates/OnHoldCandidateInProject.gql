@@ -1,0 +1,16 @@
+#import "../../fragments/EventWithUser.gql"
+
+mutation OnHoldCandidateInProject($candidateId: ObfId!, $projectId: ObfId!, $note: String) {
+  onHoldCandidateInProject(candidateId: $candidateId, projectId: $projectId, note: $note) {
+    candidate {
+      id
+      candidate_project_pivot {
+        is_shortlisted
+        status
+      }
+    }
+    event {
+      ...EventWithUser
+    }
+  }
+}

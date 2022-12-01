@@ -1,0 +1,9 @@
+query GetSharedLinksOfDocument($document_id: ObfId!) {
+  getSharedLinksOfDocument(document_id: $document_id) {
+    id
+    URL
+    token
+    views
+    expires_at
+  }
+}

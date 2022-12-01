@@ -1,0 +1,7 @@
+query GetAllSkills {
+  allSkills(orderBy: [{column: "title", order: ASC}]) {
+    id
+    title
+    is_reviewed
+  }
+}

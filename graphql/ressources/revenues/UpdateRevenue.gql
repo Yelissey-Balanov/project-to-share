@@ -1,0 +1,7 @@
+#import "../../fragments/Revenue.gql"
+
+mutation UpdateRevenue($id: ObfId!, $input: UpdateRevenueInput!) {
+    updateRevenue(id: $id, input: $input) {
+      ...Revenue
+    }
+}

@@ -1,0 +1,144 @@
+#import "../../fragments/ModificationHistory.gql"
+#import "../../fragments/Document.gql"
+#import "../../fragments/EventWithUser.gql"
+#import "../../fragments/EventEventable.gql"
+#import "../../fragments/ImageSizeFormat.gql"
+#import "../../fragments/PlacedCandidate.gql"
+#import "../../fragments/Revenue.gql"
+
+query GetProjectForView($projectId: ObfId!) {
+  project(id: $projectId, trashed: WITH) {
+    id
+    status
+    is_interim
+    is_permanent
+    title
+    max_basic_salary
+    max_bonus_eur
+    is_business_car_included
+    fee_structure
+    max_daily_rate
+    expenses_included
+    retain
+    project_start
+    project_end
+    placed_start_at
+    status_note
+    notes
+    archived_at
+
+    industries {
+      id
+      title
+      synonyms {
+        id
+        title
+      }
+    }
+    skills {
+      id
+      title
+      synonyms {
+        id
+        title
+      }
+    }
+    certifications {
+      id
+      title
+    }
+    it_skills {
+      id
+      title
+      synonyms {
+        id
+        title
+      }
+    }
+    company{
+      id
+      aliasOrName
+      logo {
+        id
+        sizes {
+          PROFILE_IMAGE {
+            ...ImageSizeFormat
+          }
+        }
+      }
+      deleted_at
+    }
+    clients {
+      id
+      position
+      person {
+        id
+        full_name
+        foto {
+          id
+          sizes {
+            PROFILE_IMAGE {
+              ...ImageSizeFormat
+            }
+          }
+        }
+      }
+      deleted_at
+      user_id
+      client_project_pivot {
+        has_long_list_access
+      }
+    }
+    documents {
+      ...Document
+    }
+    users {
+      id
+      firstname
+      lastname
+      pivot {
+        percent
+        role
+      }
+      foto {
+        id
+        sizes {
+          PROFILE_IMAGE {
+            ...ImageSizeFormat
+          }
+        }
+      }
+    }
+    languages {
+      code
+      name
+      language_pivot {
+        level
+      }
+    }
+    deleted_at
+    client_events {
+      ...EventWithUser
+      ...EventEventable
+    }
+    shared_links {
+      token
+      guest_accesses
+      expires_at
+      password
+      is_longlist_shared
+    }
+    histories {
+      ...ModificationHistory
+    }
+    placed_candidate {
+      ...PlacedCandidate
+      events_in_project(projectId: $projectId) {
+        ...EventWithUser
+      }
+    }
+    revenues {
+     ...Revenue
+    }
+  }
+}

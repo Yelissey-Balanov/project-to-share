@@ -1,0 +1,5 @@
+mutation deleteCompany($id: ObfId!) {
+  deleteCompany(id: $id) {
+    id
+  }
+}

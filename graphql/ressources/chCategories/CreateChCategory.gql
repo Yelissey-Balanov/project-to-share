@@ -1,0 +1,5 @@
+mutation CreateChCategory($input: CreateChCategoryInput!) {
+  createChCategory(input: $input) {
+    id
+  }
+}

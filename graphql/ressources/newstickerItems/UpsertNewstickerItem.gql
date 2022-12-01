@@ -1,0 +1,6 @@
+mutation UpsertNewstickerItem($input: UpsertNewstickerItemInput!) {
+    upsertNewstickerItem(input: $input) {
+      id
+      status
+    }
+}

@@ -1,0 +1,11 @@
+query GetClientByAccountCreationToken($client_id: ObfId!, $token: String!) {
+  getClientByAccountCreationToken(client_id: $client_id, token: $token) {
+    id
+    person {
+      id
+      title
+      firstname
+      lastname
+    }
+  }
+}

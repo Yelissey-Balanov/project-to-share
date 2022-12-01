@@ -1,0 +1,3 @@
+mutation RemoveCandidateFromLonglist($candidateId: ObfId!, $projectId: ObfId!) {
+  removeCandidateFromLonglist(candidateId: $candidateId, projectId: $projectId)
+}

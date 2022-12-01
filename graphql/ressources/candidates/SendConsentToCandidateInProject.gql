@@ -1,0 +1,6 @@
+mutation SendConsentToCandidateInProject($candidateId: ObfId!, $projectId: ObfId!) {
+  sendConsentToCandidateInProject(candidateId: $candidateId, projectId: $projectId) {
+    consent_sent_at
+    consent_sent_to_email
+  }
+}

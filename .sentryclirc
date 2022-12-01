@@ -1,0 +1,6 @@
+[defaults]
+project=stella-nuxt
+org=blackbull-international
+
+[auth]
+token=91ef3892719d49b3b5721c7ef5199d3f34d24f30c48d44cf860140d183858dee

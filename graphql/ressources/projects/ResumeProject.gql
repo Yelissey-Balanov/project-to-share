@@ -1,0 +1,7 @@
+mutation ResumeProject($id: ObfId!, $note: String) {
+    resumeProject(id: $id, note: $note) {
+      id
+      status
+      status_note
+    }
+}

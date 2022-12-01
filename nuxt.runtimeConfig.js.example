@@ -1,0 +1,21 @@
+export default {
+  publicRuntimeConfig: {
+    baseClientUrl: 'http://localhost:10081',
+    baseServerUrl: 'http://localhost:10081',
+    publicUrl: 'http://localhost:10081/storage/',
+    graphqlEndpoint: 'http://localhost:10081/graphql',
+    wsKey: '...',
+    wsHost: 'localhost',
+    wsPort: 10081,
+    here: {
+      geocoderApi: 'https://geocoder.cit.api.here.com/6.2/geocode.json',
+      suggestApi: 'https://autocomplete.geocoder.cit.api.here.com/6.2/suggest.json'
+    },
+    hereTokens: {
+      appId: '...',
+      appCode: '...',
+      apiKey: '...'
+    }
+  },
+  privateRuntimeConfig: {}
+}

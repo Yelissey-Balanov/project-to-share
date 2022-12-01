@@ -1,0 +1,13 @@
+#import "../../fragments/Paginator.gql"
+#import "../../fragments/GetCompanies.gql"
+
+query GetCompanies($orderBy: [OrderByClause!], $first: Int!, $page: Int, $name: String, $filter: CompaniesFilter) {
+  companies(orderBy: $orderBy, first: $first, page: $page, name: $name, filter: $filter) {
+    data {
+      ...GetCompanies
+    }
+    paginatorInfo {
+      ...Paginator
+    }
+  }
+}

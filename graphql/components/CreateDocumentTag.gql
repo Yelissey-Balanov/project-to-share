@@ -1,0 +1,6 @@
+mutation CreateDocumentTag($input: CreateDocumentTagInput!) {
+  createDocumentTag(input: $input) {
+    id
+    title
+  }
+}
